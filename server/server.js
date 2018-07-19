@@ -4,6 +4,15 @@ const API_KEY = '';
 
 let arr = [];
 
+let summonerSpells;
+
+fetch('http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/summoner.json')
+  .then(response => response.json())
+  .then(json => {
+    summonerSpells = json;
+    return null;
+  })
+  .catch(err => res.send(err));
 
 // encoding function below serves only as an example
 let encode = string => {
@@ -12,7 +21,24 @@ let encode = string => {
     newString += string[i].charCodeAt();
   }
   return newString;
-}
+};
+
+// data argument is the data key coming from http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/summoner.json
+let mapSummonerSpellId = (data, spellId) => {
+  for (let prop in data) {
+    if (data.hasOwnProperty(prop)) {
+      if (parseInt(data[prop].key) === spellId) {
+        return {
+          name: data[prop].name,
+          description: data[prop].description,
+          cooldown: data[prop].cooldownBurn,
+          image: data[prop].image,
+          used: new Date().getTime()
+        }
+      }
+    }
+  }
+};
 
 app.get('/', function (req, res) {
   res.send('foo')
@@ -26,7 +52,7 @@ app.get('/create-watcher/:leagueServer/:summonerName', (req, res) => {
     .then(response => response.json())
     .then(response => {
       if (arr.includes(response.id)) {
-        res.send('Whoops, it looks like this summoner tracker is already up and running!')
+        res.send('Whoops, it looks like this summoner tracker is already up and running!');
         return null;
       }
       summonerId = response.id;
@@ -44,14 +70,8 @@ app.get('/create-watcher/:leagueServer/:summonerName', (req, res) => {
                   championId: e.championId,
                   summonerName: e.summonerName,
                   perks: e.perks,
-                  spell1: {
-                    id: e.spell1Id,
-                    used: new Date().getTime()
-                  },
-                  spell2: {
-                    id: e.spell2Id,
-                    used: new Date().getTime()
-                  }
+                  spell1: mapSummonerSpellId(summonerSpells.data, e.spell1Id),
+                  spell2: mapSummonerSpellId(summonerSpells.data, e.spell2Id)
                 }
               }),
               platformId: json.platformId,
