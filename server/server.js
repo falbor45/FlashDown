@@ -10,7 +10,7 @@ let arr = [];
 
 let summonerSpells;
 
-fetch('http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/summoner.json')
+fetch('http://ddragon.leagueoflegends.com/cdn/8.14.1/data/en_US/summoner.json')
   .then(response => response.json())
   .then(json => {
     summonerSpells = json;
