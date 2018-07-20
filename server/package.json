@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/falbor45/FlashDown#readme",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "node-fetch": "^2.1.2",
     "socket.io": "^2.1.1"
