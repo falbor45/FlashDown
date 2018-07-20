@@ -35,9 +35,10 @@ let mapSummonerSpellId = (data, spellId) => {
         return {
           name: data[prop].name,
           description: data[prop].description,
-          cooldown: data[prop].cooldownBurn,
+          cooldown: parseInt(data[prop].cooldownBurn),
           image: data[prop].image,
-          used: new Date().getTime()
+          used: new Date().getTime(),
+          available: new Date().getTime() + (data[prop].cooldownBurn * 1000)
         }
       }
     }
@@ -51,6 +52,7 @@ let updateSummonerSpellCD = (data, summonerName, spell) => {
   for (let i = 0; i < newData.participants.length; i++) {
     if (newData.participants[i].summonerName === summonerName) {
       newData.participants[i][whichSpell].used = new Date().getTime();
+      newData.participants[i][whichSpell].available = new Date().getTime() + (newData.participants[i][whichSpell].cooldown * 1000)
     }
   }
   return newData;
