@@ -1,6 +1,9 @@
 const app = require('express')();
 const fetch = require('node-fetch');
 const bodyParser = require('body-parser');
+const React = require('react');
+const { renderToString } = require('react-dom/server');
+const App = require('../app/App.js');
 const API_KEY = '';
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -59,7 +62,12 @@ let updateSummonerSpellCD = (data, summonerName, spell) => {
 };
 
 app.get('/', function (req, res) {
-  res.send('foo')
+  const appString = renderToString(<App/>);
+
+  res.send(template({
+    body: appString,
+    title: 'Hello World from the server'
+  }));
 });
 
 app.get('/create-watcher/:leagueServer/:summonerName', (req, res) => {
