@@ -1,11 +1,18 @@
-const app = require('express')();
-const fetch = require('node-fetch');
-const bodyParser = require('body-parser');
-const React = require('react');
-const { renderToString } = require('react-dom/server');
-const App = require('../app/App.js');
+import express from 'express'
+import path from 'path';
+import fetch from 'node-fetch'
+import bodyParser from 'body-parser'
+import React from 'react'
+import ReactDOMServer from 'react-dom/server'
+
+import App from '../app/App.js'
+import Html from '../Html'
+
 const API_KEY = '';
 
+const app = express();
+
+app.use(express.static(path.join(__dirname)));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -61,13 +68,21 @@ let updateSummonerSpellCD = (data, summonerName, spell) => {
   return newData;
 };
 
-app.get('/', function (req, res) {
-  const appString = renderToString(<App/>);
+app.get('/', async (req, res) => {
+  const scripts = ['vendor.js', 'client.js'];
 
-  res.send(template({
-    body: appString,
-    title: 'Hello World from the server'
-  }));
+  const initialState = { data: summonerSpells };
+
+  const appMarkup = ReactDOMServer.renderToString(
+    <App {...initialState} />
+  );
+  const html = ReactDOMServer.renderToStaticMarkup(
+    <Html children={appMarkup}
+          scripts={scripts}
+          initialState={initialState}/>
+  );
+
+  res.send(`<!doctype html>${html}`);
 });
 
 app.get('/create-watcher/:leagueServer/:summonerName', (req, res) => {

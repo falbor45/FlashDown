@@ -1,10 +1,22 @@
 import React, { Component } from 'react';
+import propTypes from 'prop-types'
 
 export default class App extends Component {
+  static propTypes = {
+    data: propTypes.object.isRequired
+  };
+
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      data: this.props.data
+    }
+  }
   render() {
     return (
       <div>
-        <h1>Foo</h1>
+        <button onClick={() => console.log(this.state.data)}>Foo</button>
       </div>
     );
   }
