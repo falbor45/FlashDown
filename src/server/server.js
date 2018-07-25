@@ -13,7 +13,7 @@ const API_KEY = '';
 const app = express();
 
 app.use(express.static(path.join(__dirname)));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 let arr = [];
@@ -111,8 +111,7 @@ app.get('/create-watcher/:leagueServer/:summonerName', (req, res) => {
             }),
             platformId: json.platformId,
             bannedChampions: json.bannedChampions,
-            gameStartTime: json.gameStartTime,
-            gameLength: json.gameLength
+            gameStartTime: json.gameStartTime
           }
         })
         .catch(error => res.send(error))
