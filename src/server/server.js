@@ -69,20 +69,13 @@ let updateSummonerSpellCD = (data, summonerName, spell) => {
 };
 
 app.get('/', async (req, res) => {
-  const scripts = ['vendor.js', 'client.js'];
+  const initialState = { };
 
-  const initialState = { data: summonerSpells };
-
-  const appMarkup = ReactDOMServer.renderToString(
+  ReactDOMServer.renderToNodeStream(
+    <Html initialState={JSON.stringify(initialState)}>
     <App {...initialState} />
-  );
-  const html = ReactDOMServer.renderToStaticMarkup(
-    <Html children={appMarkup}
-          scripts={scripts}
-          initialState={initialState}/>
-  );
-
-  res.send(`<!doctype html>${html}`);
+    </Html>
+  ).pipe(res);
 });
 
 app.get('/create-watcher/:leagueServer/:summonerName', (req, res) => {
