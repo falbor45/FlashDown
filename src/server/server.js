@@ -19,12 +19,19 @@ app.use(bodyParser.json());
 let arr = [];
 
 let summonerSpells;
+let latestVersion;
 
-fetch('http://ddragon.leagueoflegends.com/cdn/8.14.1/data/en_US/summoner.json')
+fetch('https://ddragon.leagueoflegends.com/api/versions.json')
   .then(response => response.json())
   .then(json => {
-    summonerSpells = json;
-    return null;
+    latestVersion = json[0];
+    fetch(`http://ddragon.leagueoflegends.com/cdn/${latestVersion}/data/en_US/summoner.json`)
+      .then(response => response.json())
+      .then(json => {
+        summonerSpells = json;
+        return null;
+      })
+      .catch(err => res.send(err))
   })
   .catch(err => res.send(err));
 
@@ -76,6 +83,54 @@ app.get('/', async (req, res) => {
     <App {...initialState} />
     </Html>
   ).pipe(res);
+});
+
+app.get('/summoner/:leagueServer/:summonerName', (req, res) => {
+  let leagueServer = req.params.leagueServer;
+  let summonerName = req.params.summonerName;
+  let summonerData = {};
+
+  let regionMap = {
+    "eune": "eun1",
+    "euw": "euw1",
+    "jp": "jp1",
+    "las": "la2",
+    "lan": "la1",
+    "na": "na1",
+    "oce": "oc1",
+    "ru": "ru",
+    "tr": "tr1",
+    "br": "br1"
+  };
+
+  if (regionMap[leagueServer] === undefined) {
+    res.json({
+      status: {
+        status_code: 404,
+        message: "Region not found"
+      }
+    });
+
+    return null;
+  }
+
+  fetch(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${summonerName}?api_key=${API_KEY}`)
+    .then(response => response.json())
+    .then(json => {
+      summonerData.name = json.name;
+      summonerData.summonerLevel = json.summonerLevel;
+      summonerData.lastSeen = json.revisionDate;
+      summonerData.profileIconURL = `http://ddragon.leagueoflegends.com/cdn/${latestVersion}/img/profileicon/${json.profileIconId}.png`;
+
+      fetch(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/league/v3/positions/by-summoner/${json.id}?api_key=${API_KEY}`)
+        .then(response => response.json())
+        .then(json2 => {
+          summonerData.queueData = json2;
+        })
+        .then(() => res.send(summonerData))
+        .catch(err => res.send(err));
+    })
+    .catch(err => res.send(err))
 });
 
 app.get('/create-watcher/:leagueServer/:summonerName', (req, res) => {
