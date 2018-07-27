@@ -5,6 +5,7 @@ const Html = (props) => {
     <html>
     <head>
       <title>App</title>
+      <link rel="stylesheet" type="text/css" href="client.css"/>
     </head>
     <body>
     <div id="root">{props.children}</div>
