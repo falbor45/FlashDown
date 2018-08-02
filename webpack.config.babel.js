@@ -39,7 +39,7 @@ const common = {
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
-      filename: "[name].css",
+      filename: "styles.css",
       chunkFilename: "[id].css"
     })
   ]
