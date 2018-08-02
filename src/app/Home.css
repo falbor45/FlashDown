@@ -1,0 +1,49 @@
+.home-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 25%; }
+
+.summoner-search-form {
+  position: relative;
+  width: 80%;
+  margin: 0 auto; }
+  @media screen and (min-width: 1200px) {
+    .summoner-search-form {
+      width: 40%; } }
+
+.search-input {
+  width: 100%;
+  height: 3rem;
+  border: 1px solid #AAAAAA;
+  text-align: center;
+  border-right: none;
+  padding: 0 25% 0 5%;
+  border-radius: 4px;
+  font-size: 1.2rem; }
+
+.find-region {
+  position: absolute;
+  top: 0;
+  right: 10%;
+  width: 10%;
+  height: 3rem;
+  color: #AAAAAA;
+  font-weight: bold;
+  border: none;
+  background: none; }
+  .find-region:hover {
+    cursor: pointer; }
+
+.find-summoner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10%;
+  height: 3rem;
+  background: #FFAE00;
+  font-weight: bold;
+  border: none;
+  border-radius: 0 4px 4px 0; }
+
+/*# sourceMappingURL=Home.css.map */
