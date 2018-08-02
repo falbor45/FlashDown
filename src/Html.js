@@ -5,6 +5,7 @@ const Html = (props) => {
     <html>
     <head>
       <title>App</title>
+      <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet"/>
       <link rel="stylesheet" type="text/css" href="styles.css"/>
     </head>
     <body>

@@ -1,0 +1,43 @@
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+  height: 100%;
+  width: 100%; }
+
+.region-select {
+  border: 1px solid #AAAAAA;
+  border-radius: 8px;
+  background: #FFFFFF;
+  width: 60%;
+  margin: 0 auto;
+  margin-top: 10%;
+  padding-top: 1rem; }
+
+.heading-wrapper {
+  border-bottom: 1px solid #AAAAAA;
+  text-align: center;
+  padding-bottom: 1rem; }
+
+.regions {
+  background: #EEEEEE;
+  padding-bottom: 1rem;
+  border-radius: 0 0 8px 8px; }
+
+.region-item {
+  display: inline-block;
+  width: 50%;
+  margin: 1rem 0;
+  cursor: pointer; }
+  .region-item:hover .region-icon {
+    color: #FFAE00; }
+
+.region-icon {
+  font-size: 2rem;
+  color: #AAAAAA;
+  margin-bottom: 2rem;
+  transition: 0.25s; }
+
+/*# sourceMappingURL=RegionSelect.css.map */

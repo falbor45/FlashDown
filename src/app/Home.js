@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './Home.css'
+import RegionSelect from './RegionSelect'
 
 export default class Home extends Component {
   constructor(props) {
@@ -7,7 +8,8 @@ export default class Home extends Component {
 
     this.state = {
       region: 'na',
-      searchValue: ''
+      searchValue: '',
+      regionSelectVisible: false
     }
   }
 
@@ -15,6 +17,13 @@ export default class Home extends Component {
     this.setState({
       searchValue: event.target.value
     });
+  };
+
+  handleRegionSelect = newRegion => {
+    this.setState({
+      region: newRegion,
+      regionSelectVisible: false
+    })
   };
 
   render() {
@@ -26,9 +35,12 @@ export default class Home extends Component {
                  placeholder="Search for summoner here..."
                  value={this.state.searchValue}
                  onChange={e => this.handleInputChange(e)}/>
-          <button className="find-region">{this.state.region.toUpperCase()}</button>
-          <button className="find-summoner">GO!</button>
+          <button className="find-region" type="button" onClick={() => this.setState({regionSelectVisible: true})}>{this.state.region.toUpperCase()}</button>
+          <button className="find-summoner" type="button">GO!</button>
         </form>
+        {
+          this.state.regionSelectVisible ? <RegionSelect handleRegionSelect={this.handleRegionSelect}/> : null
+        }
       </div>
     )
   }
