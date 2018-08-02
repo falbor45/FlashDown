@@ -31,9 +31,9 @@ fetch('https://ddragon.leagueoflegends.com/api/versions.json')
         summonerSpells = json;
         return null;
       })
-      .catch(err => res.send(err))
+      .catch(err => console.log(err))
   })
-  .catch(err => res.send(err));
+  .catch(err => console.log(err));
 
 // encoding function below serves only as an example
 let encode = string => {
