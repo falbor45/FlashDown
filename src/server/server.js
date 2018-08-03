@@ -76,7 +76,7 @@ let updateSummonerSpellCD = (data, summonerName, spell) => {
   return newData;
 };
 
-app.get('/', async (req, res) => {
+app.get('*', async (req, res) => {
   const initialState = { };
   const context = {};
 
