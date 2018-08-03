@@ -6,7 +6,7 @@ const Html = (props) => {
     <head>
       <title>App</title>
       <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet"/>
-      <link rel="stylesheet" type="text/css" href="styles.css"/>
+      <link rel="stylesheet" type="text/css" href="/styles.css"/>
     </head>
     <body>
     <div id="root">{props.children}</div>
