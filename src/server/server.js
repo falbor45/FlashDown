@@ -12,6 +12,7 @@ import Html from '../Html'
 const API_KEY = '';
 
 const app = express();
+const api = express();
 
 app.use(express.static(path.join(__dirname)));
 app.use(bodyParser.urlencoded({extended: true}));
@@ -89,7 +90,7 @@ app.get('*', async (req, res) => {
   ).pipe(res);
 });
 
-app.get('/summoner/:leagueServer/:summonerName', (req, res) => {
+api.get('/summoner/:leagueServer/:summonerName', (req, res) => {
   let leagueServer = req.params.leagueServer;
   let summonerName = req.params.summonerName;
   let summonerData = {};
@@ -137,7 +138,7 @@ app.get('/summoner/:leagueServer/:summonerName', (req, res) => {
     .catch(err => res.send(err))
 });
 
-app.get('/create-watcher/:leagueServer/:summonerName', (req, res) => {
+api.get('/create-watcher/:leagueServer/:summonerName', (req, res) => {
   let leagueServer = req.params.leagueServer;
   let summonerName = req.params.summonerName;
   let summonerId;
@@ -175,7 +176,7 @@ app.get('/create-watcher/:leagueServer/:summonerName', (req, res) => {
         })
         .catch(error => res.send(error))
 
-      app.route(`/watchers/${encode(summonerName)}`)
+      api.route(`/watchers/${encode(summonerName)}`)
         .get((req, res) => {
           res.send(gameData)
         })
@@ -194,4 +195,8 @@ app.get('/create-watcher/:leagueServer/:summonerName', (req, res) => {
 
 app.listen(3000, function () {
   console.log('listening on *:3000');
+});
+
+api.listen(3001, function () {
+  console.log('listening on *:3001')
 });
