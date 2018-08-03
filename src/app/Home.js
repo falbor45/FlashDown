@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Link } from 'react-router-dom'
 import './Home.css'
 import RegionSelect from './RegionSelect'
 
@@ -36,7 +37,9 @@ export default class Home extends Component {
                  value={this.state.searchValue}
                  onChange={e => this.handleInputChange(e)}/>
           <button className="find-region" type="button" onClick={() => this.setState({regionSelectVisible: true})}>{this.state.region.toUpperCase()}</button>
-          <button className="find-summoner" type="button">GO!</button>
+          <Link to={`/summoner/${this.state.region}/${this.state.searchValue}`}>
+            <button className="find-summoner" type="button">GO!</button>
+          </Link>
         </form>
         {
           this.state.regionSelectVisible ? <RegionSelect handleRegionSelect={this.handleRegionSelect}/> : null

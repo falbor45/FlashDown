@@ -4,6 +4,7 @@ import fetch from 'node-fetch'
 import bodyParser from 'body-parser'
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
+import { StaticRouter } from 'react-router'
 
 import App from '../app/App.js'
 import Html from '../Html'
@@ -77,10 +78,13 @@ let updateSummonerSpellCD = (data, summonerName, spell) => {
 
 app.get('/', async (req, res) => {
   const initialState = { };
+  const context = {};
 
   ReactDOMServer.renderToNodeStream(
     <Html initialState={JSON.stringify(initialState)}>
-    <App {...initialState} />
+    <StaticRouter location={req.url} context={context}>
+      <App {...initialState} />
+    </StaticRouter>
     </Html>
   ).pipe(res);
 });
