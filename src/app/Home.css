@@ -1,18 +1,19 @@
 .home-wrapper {
   max-width: 1200px;
   margin: 0 auto;
-  text-align: center;
-  padding-top: 25%; }
+  text-align: center; }
 
 .summoner-search-form {
   position: relative;
   width: 80%;
-  margin: 0 auto; }
+  margin: 0 auto;
+  margin-top: 250px; }
   @media screen and (min-width: 1200px) {
     .summoner-search-form {
       width: 40%; } }
 
 .search-input {
+  box-sizing: border-box;
   width: 100%;
   height: 3rem;
   border: 1px solid #AAAAAA;
