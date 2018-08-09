@@ -1,0 +1,65 @@
+.summoner-header {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  padding: 2rem; }
+  @media screen and (min-width: 1200px) {
+    .summoner-header {
+      padding: 1rem; } }
+
+.summoner-icon {
+  position: relative;
+  margin-right: 1rem;
+  width: 250px;
+  height: 250px;
+  text-align: center; }
+  @media screen and (min-width: 1200px) {
+    .summoner-icon {
+      width: 150px;
+      height: 150px; } }
+  .summoner-icon img {
+    width: 100%; }
+  .summoner-icon span {
+    font-size: 2rem;
+    width: 100px;
+    height: 48px;
+    position: absolute;
+    top: 100%;
+    margin-top: -24px;
+    left: 50%;
+    background-color: #2d2a25;
+    border-radius: 6px;
+    margin-left: -50px;
+    border: 1px solid #FFAE00;
+    padding-top: 6px;
+    color: #FFAE00; }
+    @media screen and (min-width: 1200px) {
+      .summoner-icon span {
+        font-size: 1rem;
+        width: 50px;
+        height: 24px;
+        margin-top: -12px;
+        margin-left: -25px;
+        padding-top: 3px; } }
+
+.summoner-misc-info {
+  padding: 2rem; }
+
+.summoner-name {
+  color: #FFFFFF;
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1rem; }
+  @media screen and (min-width: 1200px) {
+    .summoner-name {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem; } }
+
+.summoner-last-seen {
+  font-size: 1.75rem;
+  color: #AAAAAA; }
+  @media screen and (min-width: 1200px) {
+    .summoner-last-seen {
+      font-size: 0.875rem; } }
+
+/*# sourceMappingURL=SummonerStats.css.map */
