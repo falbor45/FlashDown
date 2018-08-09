@@ -1,10 +1,11 @@
 import express from 'express'
 import path from 'path';
-import fetch from 'node-fetch'
+import 'fetch-everywhere'
 import bodyParser from 'body-parser'
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import { StaticRouter } from 'react-router'
+import streamString from 'node-stream-string'
 
 import App from '../app/App.js'
 import Html from '../Html'
@@ -12,11 +13,16 @@ import Html from '../Html'
 const API_KEY = '';
 
 const app = express();
-const api = express();
-
 app.use(express.static(path.join(__dirname)));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+const api = express();
+api.use( (req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 let arr = [];
 
@@ -81,13 +87,17 @@ app.get('*', async (req, res) => {
   const initialState = { };
   const context = {};
 
-  ReactDOMServer.renderToNodeStream(
+  const stream = streamString`
+    <!DOCTYPE html>
+    ${ReactDOMServer.renderToNodeStream(
     <Html initialState={JSON.stringify(initialState)}>
     <StaticRouter location={req.url} context={context}>
       <App {...initialState} />
     </StaticRouter>
     </Html>
-  ).pipe(res);
+  )}
+  `
+  stream.pipe(res);
 });
 
 api.get('/summoner/:leagueServer/:summonerName', (req, res) => {
@@ -193,10 +203,10 @@ api.get('/create-watcher/:leagueServer/:summonerName', (req, res) => {
     .catch(error => res.send(error))
 });
 
-app.listen(3000, function () {
-  console.log('listening on *:3000');
+app.listen(80, function () {
+  console.log('listening on *:80');
 });
 
-api.listen(3001, function () {
-  console.log('listening on *:3001')
+api.listen(3000, function () {
+  console.log('listening on *:3000')
 });
