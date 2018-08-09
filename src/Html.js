@@ -11,7 +11,7 @@ const Html = (props) => {
     <body>
     <div id="root">{props.children}</div>
     <script id="initial-state" type="text/plain" data-json={props.initialState}></script>
-    <script src="./client.js"></script>
+    <script src="/client.js"></script>
     </body>
     </html>
   );
