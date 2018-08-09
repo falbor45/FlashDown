@@ -27,10 +27,14 @@ export default class Home extends Component {
     })
   };
 
+  handleSubmit = () => {
+    this.props.history.push(`/summoner/${this.state.region}/${this.state.searchValue}`);
+  };
+
   render() {
     return (
       <div className="home-wrapper">
-        <form className="summoner-search-form">
+        <form className="summoner-search-form" onSubmit={this.handleSubmit}>
           <input className="search-input"
                  type="text"
                  placeholder="Search for summoner here..."
