@@ -1,11 +1,13 @@
-.summoner-header {
+.summoner-view {
   max-width: 1200px;
   margin: 0 auto;
-  display: flex;
   padding: 2rem; }
   @media screen and (min-width: 1200px) {
-    .summoner-header {
+    .summoner-view {
       padding: 1rem; } }
+
+.summoner-header {
+  display: flex; }
 
 .summoner-icon {
   position: relative;
@@ -61,5 +63,29 @@
   @media screen and (min-width: 1200px) {
     .summoner-last-seen {
       font-size: 0.875rem; } }
+
+.summoner-ranked {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  text-align: center; }
+
+.summoner-queue {
+  width: 33.33%; }
+
+.league-type {
+  color: white;
+  font-weight: bold;
+  margin-bottom: 0.5rem; }
+
+.league {
+  color: #FFAE00;
+  font-weight: bold;
+  font-size: 1.125rem;
+  margin-bottom: 0.5rem; }
+
+.league-win-loss {
+  color: white; }
 
 /*# sourceMappingURL=SummonerStats.css.map */
