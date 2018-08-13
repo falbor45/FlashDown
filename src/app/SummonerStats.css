@@ -65,6 +65,8 @@
       font-size: 0.875rem; } }
 
 .summoner-ranked {
+  width: 70%;
+  margin: 0 auto;
   margin-top: 2rem;
   display: flex;
   justify-content: space-between;

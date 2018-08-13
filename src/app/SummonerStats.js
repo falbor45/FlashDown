@@ -61,7 +61,7 @@ export default class SummonerStats extends Component {
         return 'Ranked, Twisted Treeline'
       }
     }
-  }
+  };
 
   calculateLastSeen = time => {
     let seconds = (new Date().getTime() - time) / 1000;
@@ -79,8 +79,15 @@ export default class SummonerStats extends Component {
       return `${hours} hour${hours === 1 ? '' : 's'} ago`
     }
 
-    return `${hours / 24} day${days === 1 ? '' : 's'} ago`
-  }
+    let days = Math.floor(hours / 24);
+    return `${days} day${days === 1 ? '' : 's'} ago`
+  };
+
+  unrankedLeaguePlaceholder = () => (
+    <div className="summoner-queue">
+      <img src={`/${UnrankedLeague}`}/>
+    </div>
+  )
 
 
   render() {
@@ -91,6 +98,9 @@ export default class SummonerStats extends Component {
           console.log(json)
           this.setState({
             data: json,
+            soloQ: json.queueData.find(x => x.queueType === 'RANKED_SOLO_5x5') || null,
+            flexQ: json.queueData.find(x => x.queueType === 'RANKED_FLEX_SR') || null,
+            flex3: json.queueData.find(x => x.queueType === 'RANKED_FLEX_TT') || null,
             fetched: true
           })
         })
@@ -112,20 +122,46 @@ export default class SummonerStats extends Component {
               </div>
               <div className="summoner-ranked">
                 {
-                  this.state.data.queueData.map(e => (
-                    <div className="summoner-queue">
-                      <img src={`/${this.determineLeagueIcon(e.tier)}`}/>
-                      <p className="league-type">{this.determineLeagueType(e.queueType)}</p>
-                      <p className="league">
-                        {e.tier} {e.rank}
-                        <p>{e.leaguePoints} LP</p>
-                      </p>
-                      <p className="league-win-loss">
-                        Wins: {e.wins} Losses: {e.losses}
-                        <p>Win ratio: {Math.floor((e.wins / (e.wins + e.losses)) * 100)}%</p>
-                      </p>
-                    </div>
-                  ))
+                  this.state.soloQ !== null ? <div className="summoner-queue">
+                    <img src={`/${this.determineLeagueIcon(this.state.soloQ.tier)}`}/>
+                    <p className="league-type">{this.determineLeagueType(this.state.soloQ.queueType)}</p>
+                    <p className="league">
+                      {this.state.soloQ.tier} {this.state.soloQ.rank}
+                      <p>{this.state.soloQ.leaguePoints} LP</p>
+                    </p>
+                    <p className="league-win-loss">
+                      Wins: {this.state.soloQ.wins} Losses: {this.state.soloQ.losses}
+                      <p>Win ratio: {Math.floor((this.state.soloQ.wins / (this.state.soloQ.wins + this.state.soloQ.losses)) * 100)}%</p>
+                    </p>
+                  </div> : this.unrankedLeaguePlaceholder()
+                }
+                {
+                  this.state.flexQ !== null ? <div className="summoner-queue">
+                    <img src={`/${this.determineLeagueIcon(this.state.flexQ.tier)}`}/>
+                    <p className="league-type">{this.determineLeagueType(this.state.flexQ.queueType)}</p>
+                    <p className="league">
+                      {this.state.flexQ.tier} {this.state.flexQ.rank}
+                      <p>{this.state.flexQ.leaguePoints} LP</p>
+                    </p>
+                    <p className="league-win-loss">
+                      Wins: {this.state.flexQ.wins} Losses: {this.state.flexQ.losses}
+                      <p>Win ratio: {Math.floor((this.state.flexQ.wins / (this.state.flexQ.wins + this.state.flexQ.losses)) * 100)}%</p>
+                    </p>
+                  </div> : this.unrankedLeaguePlaceholder()
+                }
+                {
+                  this.state.flex3 !== null ? <div className="summoner-queue">
+                    <img src={`/${this.determineLeagueIcon(this.state.flex3.tier)}`}/>
+                    <p className="league-type">{this.determineLeagueType(this.state.flex3.queueType)}</p>
+                    <p className="league">
+                      {this.state.flex3.tier} {this.state.flex3.rank}
+                      <p>{this.state.flex3.leaguePoints} LP</p>
+                    </p>
+                    <p className="league-win-loss">
+                      Wins: {this.state.flex3.wins} Losses: {this.state.flex3.losses}
+                      <p>Win ratio: {Math.floor((this.state.flex3.wins / (this.state.flex3.wins + this.state.flex3.losses)) * 100)}%</p>
+                    </p>
+                  </div> : this.unrankedLeaguePlaceholder()
                 }
               </div>
             </div> :
