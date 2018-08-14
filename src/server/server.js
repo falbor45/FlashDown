@@ -141,8 +141,26 @@ api.get('/summoner/:leagueServer/:summonerName', (req, res) => {
         .then(response => response.json())
         .then(json2 => {
           summonerData.queueData = json2;
+
+          fetch(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/match/v3/matchlists/by-account/${json.accountId}?api_key=${API_KEY}`)
+            .then(response => response.json())
+            .then(async json3 => {
+              let matches = [];
+              let matchURLs = await json3.matches.map(e => `https://${regionMap[leagueServer]}.api.riotgames.com/lol/match/v3/matches/${e.gameId}?api_key=${API_KEY}`)
+
+              await Promise.all(matchURLs.map(async (matchURL) => {
+                return fetch(matchURL)
+                  .then(matchData => matchData.json())
+                  .then(json => matches.push(json))
+                  .catch(err => res.send(err));
+              }));
+
+              summonerData.recentMatches = matches;
+
+              res.send(summonerData);
+            })
+            .catch(err => res.send(err));
         })
-        .then(() => res.send(summonerData))
         .catch(err => res.send(err));
     })
     .catch(err => res.send(err))
