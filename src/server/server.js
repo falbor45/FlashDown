@@ -27,6 +27,7 @@ api.use( (req, res, next) => {
 let arr = [];
 
 let summonerSpells;
+let champions;
 let latestVersion;
 
 fetch('https://ddragon.leagueoflegends.com/api/versions.json')
@@ -37,6 +38,14 @@ fetch('https://ddragon.leagueoflegends.com/api/versions.json')
       .then(response => response.json())
       .then(json => {
         summonerSpells = json;
+        return null;
+      })
+      .catch(err => console.log(err))
+
+    fetch(`http://ddragon.leagueoflegends.com/cdn/${latestVersion}/data/en_US/champion.json`)
+      .then(response => response.json())
+      .then(json => {
+        champions = json;
         return null;
       })
       .catch(err => console.log(err))
@@ -53,21 +62,61 @@ let encode = string => {
 };
 
 // data argument is the data key coming from http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/summoner.json
-let mapSummonerSpellId = (data, spellId) => {
+let mapSummonerSpellId = (data, spellId, gameWatcher) => {
   for (let prop in data) {
     if (data.hasOwnProperty(prop)) {
       if (parseInt(data[prop].key) === spellId) {
+        if (gameWatcher) {
+          return {
+            name: data[prop].name,
+            description: data[prop].description,
+            cooldown: parseInt(data[prop].cooldownBurn),
+            image: data[prop].image,
+            used: new Date().getTime(),
+            available: new Date().getTime() + (data[prop].cooldownBurn * 1000)
+          }
+        }
         return {
           name: data[prop].name,
           description: data[prop].description,
-          cooldown: parseInt(data[prop].cooldownBurn),
-          image: data[prop].image,
-          used: new Date().getTime(),
-          available: new Date().getTime() + (data[prop].cooldownBurn * 1000)
+          image: data[prop].image
         }
       }
     }
   }
+  return null;
+};
+
+let mapChampionId = (data, championId) => {
+  for (let prop in data) {
+    if (data.hasOwnProperty(prop)) {
+      if (parseInt(data[prop].key) === championId) {
+        return {
+          name: data[prop].name,
+          iconURL: `http://ddragon.leagueoflegends.com/cdn/${latestVersion}/img/champion/${data[prop].name}.png`
+        }
+      }
+    }
+  }
+  return null;
+};
+
+let mapMatch = data => {
+  let match = data;
+
+  match.participants = match.participants.map(e => {
+    return {
+      championId: mapChampionId(champions.data, e.championId),
+      stats: e.stats,
+      spell1Id: mapSummonerSpellId(summonerSpells.data, e.spell1Id, false),
+      spell2Id: mapSummonerSpellId(summonerSpells.data, e.spell2Id, false),
+      timeline: e.timeline,
+      teamId: e.teamId,
+      participantId: e.participantId
+    }
+  });
+
+  return match;
 };
 
 // data argument is the data that comes from gameData variable
@@ -142,7 +191,7 @@ api.get('/summoner/:leagueServer/:summonerName', (req, res) => {
         .then(json2 => {
           summonerData.queueData = json2;
 
-          fetch(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/match/v3/matchlists/by-account/${json.accountId}?api_key=${API_KEY}`)
+          fetch(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/match/v3/matchlists/by-account/${json.accountId}?endIndex=20&api_key=${API_KEY}`)
             .then(response => response.json())
             .then(async json3 => {
               let matches = [];
@@ -151,19 +200,18 @@ api.get('/summoner/:leagueServer/:summonerName', (req, res) => {
               await Promise.all(matchURLs.map(async (matchURL) => {
                 return fetch(matchURL)
                   .then(matchData => matchData.json())
-                  .then(json => matches.push(json))
-                  .catch(err => res.send(err));
+                  .then(json => matches.push(mapMatch(json)))
+                  .catch(err => console.log(err));
               }));
 
               summonerData.recentMatches = matches;
-
-              res.send(summonerData);
             })
-            .catch(err => res.send(err));
+            .then(() => res.send(summonerData))
+            .catch(err => console.log(err));
         })
-        .catch(err => res.send(err));
+        .catch(err => console.log(err));
     })
-    .catch(err => res.send(err))
+    .catch(err => console.log(err))
 });
 
 api.get('/create-watcher/:leagueServer/:summonerName', (req, res) => {
@@ -193,8 +241,8 @@ api.get('/create-watcher/:leagueServer/:summonerName', (req, res) => {
                 championId: e.championId,
                 summonerName: e.summonerName,
                 perks: e.perks,
-                spell1: mapSummonerSpellId(summonerSpells.data, e.spell1Id),
-                spell2: mapSummonerSpellId(summonerSpells.data, e.spell2Id)
+                spell1: mapSummonerSpellId(summonerSpells.data, e.spell1Id, true),
+                spell2: mapSummonerSpellId(summonerSpells.data, e.spell2Id, true)
               }
             }),
             platformId: json.platformId,
