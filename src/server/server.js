@@ -106,7 +106,7 @@ let mapMatch = data => {
 
   match.participants = match.participants.map(e => {
     return {
-      championId: mapChampionId(champions.data, e.championId),
+      champion: mapChampionId(champions.data, e.championId),
       stats: e.stats,
       spell1Id: mapSummonerSpellId(summonerSpells.data, e.spell1Id, false),
       spell2Id: mapSummonerSpellId(summonerSpells.data, e.spell2Id, false),
