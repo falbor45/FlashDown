@@ -89,12 +89,31 @@ export default class SummonerStats extends Component {
     </div>
   )
 
+  shortenSummonerName = summonerName => summonerName.replace(' ', '').toLowerCase();
+
+  mapParticipants = (participants, participantsIdentities) => {
+    let result = [];
+    let participantsCopy = participants.sort(e => e.participantId);
+    let participantsIdentitiesCopy = participantsIdentities.sort(e => e.participantId);
+
+    for (let i = 0; i < participantsCopy.length; i++) {
+      result.push({
+        ...participantsCopy[i],
+        summonerName: participantsIdentitiesCopy[i].player.summonerName,
+        profileIcon: participantsIdentitiesCopy[i].player.profileIcon,
+      })
+    }
+
+    return result;
+  };
+
 
   render() {
     if (typeof window !== 'undefined' && !this.state.fetched) {
       fetch(`http://${window.location.host}:3000/summoner/${this.props.match.params.leagueServer}/${this.props.match.params.summonerName}`)
         .then(response => response.json())
         .then(json => {
+          console.log(json)
           this.setState({
             data: {
               ...json,
@@ -164,6 +183,27 @@ export default class SummonerStats extends Component {
                       <p>Win ratio: {Math.floor((this.state.data.flex3.wins / (this.state.data.flex3.wins + this.state.data.flex3.losses)) * 100)}%</p>
                     </p>
                   </div> : this.unrankedLeaguePlaceholder()
+                }
+              </div>
+              <div className="recent-matches">
+                {
+                  this.state.data.recentMatches
+                    .map(e => e.hasOwnProperty('gameId') ? <div>
+                      <div className="match">
+                        {
+                          this.mapParticipants(e.participants, e.participantIdentities)
+                            .filter(x => this.shortenSummonerName(x.summonerName) === this.shortenSummonerName(this.props.match.params.summonerName))
+                            .map(e =>
+                              <div className="played-champion">
+                                <img src={e.champion.iconURL}/>
+                                <p className="played-champion-name">{e.champion.name}</p>
+                                <p className={e.stats.win ? 'match-win' : 'match-lose'}>{e.stats.win ? 'Win' : 'Lose'}</p>
+                              </div>
+                            )
+                        }
+                      </div>
+                    </div>  : <div> </div>
+                  )
                 }
               </div>
             </div> :

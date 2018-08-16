@@ -90,4 +90,44 @@
 .league-win-loss {
   color: white; }
 
+.recent-matches {
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 2rem; }
+  @media screen and (min-width: 1200px) {
+    .recent-matches {
+      width: 70%; } }
+
+.match {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid #FFAE00; }
+
+.played-champion {
+  margin: 1rem;
+  text-align: center;
+  width: 20%;
+  font-size: 2rem; }
+  @media screen and (min-width: 1200px) {
+    .played-champion {
+      width: 10%;
+      font-size: 1rem; } }
+  .played-champion img {
+    width: 120px;
+    height: auto;
+    border-radius: 10%; }
+    @media screen and (min-width: 1200px) {
+      .played-champion img {
+        width: 60px;
+        height: auto; } }
+
+.played-champion-name {
+  color: white;
+  font-weight: bold; }
+
+.match-win {
+  color: #FFAE00; }
+
+.match-lose {
+  color: #ae0000; }
+
 /*# sourceMappingURL=SummonerStats.css.map */
