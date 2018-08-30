@@ -188,6 +188,7 @@ export default class SummonerStats extends Component {
               <div className="recent-matches">
                 {
                   this.state.data.recentMatches
+                    .sort((a, b) => b.gameCreation - a.gameCreation)
                     .map(e => e.hasOwnProperty('gameId') ? <div>
                       <div className="match">
                         {
@@ -195,7 +196,19 @@ export default class SummonerStats extends Component {
                             .filter(x => this.shortenSummonerName(x.summonerName) === this.shortenSummonerName(this.props.match.params.summonerName))
                             .map(e =>
                               <div className="played-champion">
-                                <img src={e.champion.iconURL}/>
+                                <div className="played-champion-img">
+                                  <img src={e.champion.iconURL}/>
+                                </div>
+                                <div className="played-champion-spells">
+                                  <div>
+                                    <img src={e.spell1Id.image}/>
+                                    <img src={e.spell2Id.image}/>
+                                  </div>
+                                  <div>
+                                    <img src="https://via.placeholder.com/30x30"/>
+                                    <img src="https://via.placeholder.com/30x30"/>
+                                  </div>
+                                </div>
                                 <p className="played-champion-name">{e.champion.name}</p>
                                 <p className={e.stats.win ? 'match-win' : 'match-lose'}>{e.stats.win ? 'Win' : 'Lose'}</p>
                               </div>
