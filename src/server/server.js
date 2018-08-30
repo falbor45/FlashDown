@@ -93,7 +93,7 @@ let mapChampionId = (data, championId) => {
       if (parseInt(data[prop].key) === championId) {
         return {
           name: data[prop].name,
-          iconURL: `http://ddragon.leagueoflegends.com/cdn/${latestVersion}/img/champion/${data[prop].name === 'Wukong' ? 'MonkeyKing' : data[prop].name}.png`
+          iconURL: `http://ddragon.leagueoflegends.com/cdn/${latestVersion}/img/champion/${data[prop].name === 'Wukong' ? 'MonkeyKing' : data[prop].name === 'LeBlanc' ? 'Leblanc' : data[prop].name}.png`
         }
       }
     }
