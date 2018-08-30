@@ -79,7 +79,7 @@ let mapSummonerSpellId = (data, spellId, gameWatcher) => {
         return {
           name: data[prop].name,
           description: data[prop].description,
-          image: data[prop].image
+          image: `http://ddragon.leagueoflegends.com/cdn/${latestVersion}/img/spell/${data[prop].image.full}`
         }
       }
     }
