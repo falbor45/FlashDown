@@ -137,6 +137,9 @@
       height: 60px;
       margin-left: 0.5rem; } }
   .played-champion-spells div {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
     width: 120px;
     height: 60px; }
     @media screen and (min-width: 1200px) {
@@ -144,7 +147,7 @@
         width: 60px;
         height: 30px; } }
     .played-champion-spells div img {
-      width: 50%;
+      width: 40%;
       height: auto;
       border-radius: 10%; }
 

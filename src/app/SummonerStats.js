@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import 'fetch-everywhere'
 import './SummonerStats.css'
 import ChallengerLeague from './assets/challenger.png'
@@ -152,7 +152,8 @@ export default class SummonerStats extends Component {
                     </p>
                     <p className="league-win-loss">
                       Wins: {this.state.data.soloQ.wins} Losses: {this.state.data.soloQ.losses}
-                      <p>Win ratio: {Math.floor((this.state.data.soloQ.wins / (this.state.data.soloQ.wins + this.state.data.soloQ.losses)) * 100)}%</p>
+                      <p>Win
+                        ratio: {Math.floor((this.state.data.soloQ.wins / (this.state.data.soloQ.wins + this.state.data.soloQ.losses)) * 100)}%</p>
                     </p>
                   </div> : this.unrankedLeaguePlaceholder()
                 }
@@ -166,7 +167,8 @@ export default class SummonerStats extends Component {
                     </p>
                     <p className="league-win-loss">
                       Wins: {this.state.data.flexQ.wins} Losses: {this.state.data.flexQ.losses}
-                      <p>Win ratio: {Math.floor((this.state.data.flexQ.wins / (this.state.data.flexQ.wins + this.state.data.flexQ.losses)) * 100)}%</p>
+                      <p>Win
+                        ratio: {Math.floor((this.state.data.flexQ.wins / (this.state.data.flexQ.wins + this.state.data.flexQ.losses)) * 100)}%</p>
                     </p>
                   </div> : this.unrankedLeaguePlaceholder()
                 }
@@ -180,7 +182,8 @@ export default class SummonerStats extends Component {
                     </p>
                     <p className="league-win-loss">
                       Wins: {this.state.data.flex3.wins} Losses: {this.state.data.flex3.losses}
-                      <p>Win ratio: {Math.floor((this.state.data.flex3.wins / (this.state.data.flex3.wins + this.state.data.flex3.losses)) * 100)}%</p>
+                      <p>Win
+                        ratio: {Math.floor((this.state.data.flex3.wins / (this.state.data.flex3.wins + this.state.data.flex3.losses)) * 100)}%</p>
                     </p>
                   </div> : this.unrankedLeaguePlaceholder()
                 }
@@ -190,33 +193,35 @@ export default class SummonerStats extends Component {
                   this.state.data.recentMatches
                     .sort((a, b) => b.gameCreation - a.gameCreation)
                     .map(e => e.hasOwnProperty('gameId') ? <div>
-                      <div className="match">
-                        {
-                          this.mapParticipants(e.participants, e.participantIdentities)
-                            .filter(x => this.shortenSummonerName(x.summonerName) === this.shortenSummonerName(this.props.match.params.summonerName))
-                            .map(e =>
-                              <div className="played-champion">
-                                <div className="played-champion-img">
-                                  <img src={e.champion.iconURL}/>
-                                </div>
-                                <div className="played-champion-spells">
-                                  <div>
-                                    <img src={e.spell1Id.image}/>
-                                    <img src={e.spell2Id.image}/>
+                        <div className="match">
+                          {
+                            this.mapParticipants(e.participants, e.participantIdentities)
+                              .filter(x => this.shortenSummonerName(x.summonerName) === this.shortenSummonerName(this.props.match.params.summonerName))
+                              .map(e =>
+                                <div className="played-champion">
+                                  <div style={{display: "flex", flexDirection: "row"}}>
+                                    <div className="played-champion-img">
+                                      <img src={e.champion.iconURL}/>
+                                    </div>
+                                    <div className="played-champion-spells">
+                                      <div>
+                                        <img src={e.spell1Id.image}/>
+                                        <img src={e.spell2Id.image}/>
+                                      </div>
+                                      <div>
+                                        <img src="https://via.placeholder.com/30x30"/>
+                                        <img src="https://via.placeholder.com/30x30"/>
+                                      </div>
+                                    </div>
                                   </div>
-                                  <div>
-                                    <img src="https://via.placeholder.com/30x30"/>
-                                    <img src="https://via.placeholder.com/30x30"/>
-                                  </div>
+                                  <p className="played-champion-name">{e.champion.name}</p>
+                                  <p className={e.stats.win ? 'match-win' : 'match-lose'}>{e.stats.win ? 'Win' : 'Lose'}</p>
                                 </div>
-                                <p className="played-champion-name">{e.champion.name}</p>
-                                <p className={e.stats.win ? 'match-win' : 'match-lose'}>{e.stats.win ? 'Win' : 'Lose'}</p>
-                              </div>
-                            )
-                        }
-                      </div>
-                    </div>  : <div> </div>
-                  )
+                              )
+                          }
+                        </div>
+                      </div> : <div></div>
+                    )
                 }
               </div>
             </div> :
