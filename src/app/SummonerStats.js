@@ -209,8 +209,8 @@ export default class SummonerStats extends Component {
                                         <img src={e.spell2Id.image}/>
                                       </div>
                                       <div>
-                                        <img src="https://via.placeholder.com/30x30"/>
-                                        <img src="https://via.placeholder.com/30x30"/>
+                                        <img src={e.stats.primaryPerk.slots[0].runes.find(el => el.id === e.stats.perk0).icon}/>
+                                        <img src={e.stats.secondaryPerk.icon}/>
                                       </div>
                                     </div>
                                   </div>
