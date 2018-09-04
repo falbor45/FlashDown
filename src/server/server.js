@@ -29,6 +29,7 @@ let arr = [];
 let summonerSpells;
 let champions;
 let latestVersion;
+let runesReforged;
 
 fetch('https://ddragon.leagueoflegends.com/api/versions.json')
   .then(response => response.json())
@@ -46,6 +47,14 @@ fetch('https://ddragon.leagueoflegends.com/api/versions.json')
       .then(response => response.json())
       .then(json => {
         champions = json;
+        return null;
+      })
+      .catch(err => console.log(err))
+
+    fetch(`http://ddragon.leagueoflegends.com/cdn/${latestVersion}/data/en_US/runesReforged.json`)
+      .then(response => response.json())
+      .then(json => {
+        runesReforged = json;
         return null;
       })
       .catch(err => console.log(err))
@@ -101,13 +110,27 @@ let mapChampionId = (data, championId) => {
   return null;
 };
 
+let mapPerkId = (data, perkId) => {
+  for (let prop in data) {
+    if (data.hasOwnProperty(prop)) {
+      if (parseInt(data[prop].id) === perkId) {
+        return data[prop];
+      }
+    }
+  }
+}
+
 let mapMatch = data => {
   let match = data;
 
   match.participants = match.participants.map(e => {
     return {
       champion: mapChampionId(champions.data, e.championId),
-      stats: e.stats,
+      stats: {
+        ...e.stats,
+        primaryPerk: mapPerkId(runesReforged, e.stats.perkPrimaryStyle),
+        secondaryPerk: mapPerkId(runesReforged, e.stats.perkSubStyle)
+      },
       spell1Id: mapSummonerSpellId(summonerSpells.data, e.spell1Id, false),
       spell2Id: mapSummonerSpellId(summonerSpells.data, e.spell2Id, false),
       timeline: e.timeline,
