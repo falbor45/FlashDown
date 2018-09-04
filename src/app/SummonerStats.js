@@ -296,7 +296,7 @@ export default class SummonerStats extends Component {
                 {
                   this.state.data.recentMatches
                     .sort((a, b) => b.gameCreation - a.gameCreation)
-                    .map(e => e.hasOwnProperty('gameId') ? <div>
+                    .map(e => e.hasOwnProperty('gameId') ?
                         <div className="match">
                           <div className="match-queue-type">{this.determineQueueType(e.queueId)}</div>
                           {
@@ -324,8 +324,7 @@ export default class SummonerStats extends Component {
                                 </div>
                               )
                           }
-                        </div>
-                      </div> : <div></div>
+                        </div> : <div></div>
                     )
                 }
               </div>
