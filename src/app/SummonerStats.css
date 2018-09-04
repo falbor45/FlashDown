@@ -154,11 +154,28 @@
 .played-champion-name {
   color: white;
   font-weight: bold; }
+  @media screen and (min-width: 1200px) {
+    .played-champion-name {
+      padding-right: 2rem; } }
 
 .match-win {
   color: #FFAE00; }
+  @media screen and (min-width: 1200px) {
+    .match-win {
+      padding-right: 2rem; } }
 
 .match-lose {
   color: #ae0000; }
+  @media screen and (min-width: 1200px) {
+    .match-lose {
+      padding-right: 2rem; } }
+
+.match-queue-type {
+  display: inline-block;
+  width: 20%;
+  padding: 0 1rem;
+  background: #FFAE00;
+  font-weight: bold;
+  text-align: center; }
 
 /*# sourceMappingURL=SummonerStats.css.map */
