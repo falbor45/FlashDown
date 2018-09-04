@@ -114,11 +114,24 @@ let mapPerkId = (data, perkId) => {
   for (let prop in data) {
     if (data.hasOwnProperty(prop)) {
       if (parseInt(data[prop].id) === perkId) {
-        return data[prop];
+        return {
+          ...data[prop],
+          icon: `https://ddragon.leagueoflegends.com/cdn/img/${data[prop].icon}`,
+          slots: data[prop].slots.map(e => {
+            return {
+              runes: e.runes.map(e => {
+                return {
+                  ...e,
+                  icon: `https://ddragon.leagueoflegends.com/cdn/img/${e.icon}`
+                }
+              })
+            }
+          })
+        }
       }
     }
   }
-}
+};
 
 let mapMatch = data => {
   let match = data;
