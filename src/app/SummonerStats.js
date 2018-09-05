@@ -301,6 +301,7 @@ export default class SummonerStats extends Component {
                           <div className="match-queue-type">
                             <p>{this.determineQueueType(e.queueId)}</p>
                           </div>
+                          <div style={{display: "flex"}}>
                           {
                             this.mapParticipants(e.participants, e.participantIdentities)
                               .filter(x => this.shortenSummonerName(x.summonerName) === this.shortenSummonerName(this.props.match.params.summonerName))
@@ -326,6 +327,24 @@ export default class SummonerStats extends Component {
                                 </div>
                               )
                           }
+                          {
+                            this.mapParticipants(e.participants, e.participantIdentities)
+                              .filter(x => this.shortenSummonerName(x.summonerName) === this.shortenSummonerName(this.props.match.params.summonerName))
+                              .map(e =>
+                              <div className="kda">
+                                <p>
+                                  {e.stats.kills} /
+                                  <span> {e.stats.deaths} </span>
+                                   / {e.stats.assists}
+                                </p>
+                                <p>
+                                  {((e.stats.kills + e.stats.assists) / (e.stats.deaths || 1)).toFixed(2)}
+                                  <span> KDA</span>
+                                </p>
+                              </div>
+                              )
+                          }
+                          </div>
                         </div> : <div></div>
                     )
                 }

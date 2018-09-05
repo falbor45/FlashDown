@@ -179,4 +179,24 @@
   font-weight: bold;
   text-align: center; }
 
+.kda {
+  margin: 1rem;
+  padding-top: 1rem;
+  text-align: center;
+  font-weight: bold;
+  width: 20%;
+  font-size: 2rem; }
+  @media screen and (min-width: 1200px) {
+    .kda {
+      width: 10%;
+      font-size: 1rem; } }
+  .kda p {
+    color: white; }
+    .kda p:first-child {
+      margin-bottom: 0.5rem; }
+      .kda p:first-child span {
+        color: #ae0000; }
+    .kda p:last-child span {
+      color: #FFAE00; }
+
 /*# sourceMappingURL=SummonerStats.css.map */
