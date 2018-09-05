@@ -301,13 +301,13 @@ export default class SummonerStats extends Component {
                           <div className="match-queue-type">
                             <p>{this.determineQueueType(e.queueId)}</p>
                           </div>
-                          <div style={{display: "flex"}}>
+                          <div className="main-match-details">
                           {
                             this.mapParticipants(e.participants, e.participantIdentities)
                               .filter(x => this.shortenSummonerName(x.summonerName) === this.shortenSummonerName(this.props.match.params.summonerName))
                               .map(e =>
                                 <div className="played-champion">
-                                  <div style={{display: "flex", flexDirection: "row"}}>
+                                  <div className="played-champion-icons">
                                     <div className="played-champion-img">
                                       <img src={e.champion.iconURL}/>
                                     </div>
@@ -342,6 +342,24 @@ export default class SummonerStats extends Component {
                                   <span> KDA</span>
                                 </p>
                               </div>
+                              )
+                          }
+                          {
+                            this.mapParticipants(e.participants, e.participantIdentities)
+                              .filter(x => this.shortenSummonerName(x.summonerName) === this.shortenSummonerName(this.props.match.params.summonerName))
+                              .map(e =>
+                                <div className="item-list">
+                                  {
+                                    [0, 1, 2, 6, 3, 4, 5].map(el => e.stats[`item${el}`] !== null ?
+                                      <div>
+                                          <img src={e.stats[`item${el}`]}/>
+                                      </div> :
+                                      <div className="no-item">
+                                      </div>
+
+                                    )
+                                  }
+                                </div>
                               )
                           }
                           </div>
