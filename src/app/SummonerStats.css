@@ -104,6 +104,9 @@
   margin-bottom: 0.5rem; }
 
 .played-champion {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin: 1rem;
   text-align: center;
   width: 30%;
@@ -189,8 +192,11 @@
       font-size: 1rem; } }
 
 .kda {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin: 1rem;
-  padding-top: 1rem;
+  padding-bottom: 4rem;
   text-align: center;
   font-weight: bold;
   width: 20%;
@@ -198,7 +204,8 @@
   @media screen and (min-width: 1200px) {
     .kda {
       width: 10%;
-      font-size: 1rem; } }
+      font-size: 1rem;
+      padding-bottom: 2rem; } }
   .kda p {
     color: white; }
     .kda p:first-child {

@@ -9,6 +9,7 @@ import GoldLeague from './assets/gold.png'
 import SilverLeague from './assets/silver.png'
 import BronzeLeague from './assets/bronze.png'
 import UnrankedLeague from './assets/unranked.png'
+import MediaQuery from 'react-responsive'
 
 export default class SummonerStats extends Component {
   constructor(props) {
@@ -361,6 +362,19 @@ export default class SummonerStats extends Component {
                                 </div>
                               )
                           }
+                          <MediaQuery query="(min-width: 1200px)">
+                            <div style={{display: "flex", width: "35%", flexDirection: "row", flexWrap: "wrap", margin: "1rem", color: "white", fontSize: '1rem'}}>
+                            {
+                              this.mapParticipants(e.participants, e.participantIdentities)
+                                .map(e =>
+                                <div style={{flex: "1 0 34%", marginBottom: "3px"}}>
+                                  <img style={{width: "1rem", height: "1rem", verticalAlign: "middle"}} src={e.champion.iconURL}/>
+                                  <span><a href={`http://${window.location.host}/summoner/${this.props.match.params.leagueServer}/${this.shortenSummonerName(e.summonerName)}`}>{e.summonerName}</a></span>
+                                </div>
+                                )
+                            }
+                            </div>
+                          </MediaQuery>
                           </div>
                         </div> : <div></div>
                     )
