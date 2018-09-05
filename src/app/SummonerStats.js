@@ -298,7 +298,9 @@ export default class SummonerStats extends Component {
                     .sort((a, b) => b.gameCreation - a.gameCreation)
                     .map(e => e.hasOwnProperty('gameId') ?
                         <div className="match">
-                          <div className="match-queue-type">{this.determineQueueType(e.queueId)}</div>
+                          <div className="match-queue-type">
+                            <p>{this.determineQueueType(e.queueId)}</p>
+                          </div>
                           {
                             this.mapParticipants(e.participants, e.participantIdentities)
                               .filter(x => this.shortenSummonerName(x.summonerName) === this.shortenSummonerName(this.props.match.params.summonerName))
