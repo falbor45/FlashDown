@@ -356,7 +356,6 @@ export default class SummonerStats extends Component {
                                       </div> :
                                       <div className="no-item">
                                       </div>
-
                                     )
                                   }
                                 </div>
