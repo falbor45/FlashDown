@@ -135,6 +135,7 @@ let mapPerkId = (data, perkId) => {
 
 let mapMatch = data => {
   let match = data;
+  let findItemIconPath = itemId => itemId !== 0 ? `https://ddragon.leagueoflegends.com/cdn/${latestVersion}/img/item/${itemId}.png` : null
 
   match.participants = match.participants.map(e => {
     return {
@@ -142,7 +143,14 @@ let mapMatch = data => {
       stats: {
         ...e.stats,
         primaryPerk: mapPerkId(runesReforged, e.stats.perkPrimaryStyle),
-        secondaryPerk: mapPerkId(runesReforged, e.stats.perkSubStyle)
+        secondaryPerk: mapPerkId(runesReforged, e.stats.perkSubStyle),
+        item0: findItemIconPath(e.stats.item0),
+        item1: findItemIconPath(e.stats.item1),
+        item2: findItemIconPath(e.stats.item2),
+        item3: findItemIconPath(e.stats.item3),
+        item4: findItemIconPath(e.stats.item4),
+        item5: findItemIconPath(e.stats.item5),
+        item6: findItemIconPath(e.stats.item6)
       },
       spell1Id: mapSummonerSpellId(summonerSpells.data, e.spell1Id, false),
       spell2Id: mapSummonerSpellId(summonerSpells.data, e.spell2Id, false),
