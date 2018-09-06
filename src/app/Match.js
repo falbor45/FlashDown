@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import './Match.css'
 import MediaQuery from 'react-responsive'
 
 
@@ -159,19 +160,11 @@ export default class Match extends Component {
             }
           </div>
           <MediaQuery query="(min-width: 1200px)">
-            <div style={{
-              display: "flex",
-              width: "35%",
-              flexDirection: "row",
-              flexWrap: "wrap",
-              margin: "1rem",
-              color: "white",
-              fontSize: '1rem'
-            }}>
+            <div className="participants">
               {
                 this.props.allParticipants.map(e =>
-                    <div style={{flex: "1 0 34%", marginBottom: "3px"}}>
-                      <img style={{width: "1rem", height: "1rem", verticalAlign: "middle"}} src={e.champion.iconURL}/>
+                    <div>
+                      <img src={e.champion.iconURL}/>
                       <span><a
                         href={`http://${window.location.host}/summoner/${this.props.match.params.leagueServer}/${this.shortenSummonerName(e.summonerName)}`}>{e.summonerName}</a></span>
                     </div>
