@@ -1,15 +1,8 @@
 import React, {Component} from 'react'
 import 'fetch-everywhere'
 import './SummonerStats.css'
-import ChallengerLeague from './assets/challenger.png'
-import MasterLeague from './assets/master.png'
-import DiamondLeague from './assets/diamond.png'
-import PlatinumLeague from './assets/platinum.png'
-import GoldLeague from './assets/gold.png'
-import SilverLeague from './assets/silver.png'
-import BronzeLeague from './assets/bronze.png'
-import UnrankedLeague from './assets/unranked.png'
 import Match from './Match.js'
+import SummonerQueue from './SummonerQueue.js'
 
 export default class SummonerStats extends Component {
   constructor(props) {
@@ -21,48 +14,6 @@ export default class SummonerStats extends Component {
     }
   }
 
-  determineLeagueIcon = league => {
-    switch (league) {
-      case 'CHALLENGER': {
-        return ChallengerLeague
-      }
-      case 'MASTER': {
-        return MasterLeague
-      }
-      case 'DIAMOND': {
-        return DiamondLeague
-      }
-      case 'PLATINUM': {
-        return PlatinumLeague
-      }
-      case 'GOLD': {
-        return GoldLeague
-      }
-      case 'SILVER': {
-        return SilverLeague
-      }
-      case 'BRONZE': {
-        return BronzeLeague
-      }
-      default: {
-        return UnrankedLeague
-      }
-    }
-  };
-
-  determineLeagueType = type => {
-    switch (type) {
-      case 'RANKED_SOLO_5x5': {
-        return 'Ranked, solo'
-      }
-      case 'RANKED_FLEX_SR': {
-        return 'Ranked, flex'
-      }
-      case 'RANKED_FLEX_TT': {
-        return 'Ranked, Twisted Treeline'
-      }
-    }
-  };
 
   calculateLastSeen = time => {
     let seconds = (new Date().getTime() - time) / 1000;
@@ -83,12 +34,6 @@ export default class SummonerStats extends Component {
     let days = Math.floor(hours / 24);
     return `${days} day${days === 1 ? '' : 's'} ago`
   };
-
-  unrankedLeaguePlaceholder = () => (
-    <div className="summoner-queue">
-      <img src={`/${UnrankedLeague}`}/>
-    </div>
-  )
 
   shortenSummonerName = summonerName => summonerName.replace(' ', '').toLowerCase();
 
@@ -149,53 +94,10 @@ export default class SummonerStats extends Component {
                   <p className="summoner-last-seen">Last seen: {this.calculateLastSeen(this.state.data.lastSeen)}</p>
                 </div>
               </div>
-              <div className="summoner-ranked">
-                {
-                  this.state.data.soloQ !== null ? <div className="summoner-queue">
-                    <img src={`/${this.determineLeagueIcon(this.state.data.soloQ.tier)}`}/>
-                    <p className="league-type">{this.determineLeagueType(this.state.data.soloQ.queueType)}</p>
-                    <p className="league">
-                      {this.state.data.soloQ.tier} {this.state.data.soloQ.rank}
-                      <p>{this.state.data.soloQ.leaguePoints} LP</p>
-                    </p>
-                    <p className="league-win-loss">
-                      Wins: {this.state.data.soloQ.wins} Losses: {this.state.data.soloQ.losses}
-                      <p>Win
-                        ratio: {Math.floor((this.state.data.soloQ.wins / (this.state.data.soloQ.wins + this.state.data.soloQ.losses)) * 100)}%</p>
-                    </p>
-                  </div> : this.unrankedLeaguePlaceholder()
-                }
-                {
-                  this.state.data.flexQ !== null ? <div className="summoner-queue">
-                    <img src={`/${this.determineLeagueIcon(this.state.data.flexQ.tier)}`}/>
-                    <p className="league-type">{this.determineLeagueType(this.state.data.flexQ.queueType)}</p>
-                    <p className="league">
-                      {this.state.data.flexQ.tier} {this.state.data.flexQ.rank}
-                      <p>{this.state.data.flexQ.leaguePoints} LP</p>
-                    </p>
-                    <p className="league-win-loss">
-                      Wins: {this.state.data.flexQ.wins} Losses: {this.state.data.flexQ.losses}
-                      <p>Win
-                        ratio: {Math.floor((this.state.data.flexQ.wins / (this.state.data.flexQ.wins + this.state.data.flexQ.losses)) * 100)}%</p>
-                    </p>
-                  </div> : this.unrankedLeaguePlaceholder()
-                }
-                {
-                  this.state.data.flex3 !== null ? <div className="summoner-queue">
-                    <img src={`/${this.determineLeagueIcon(this.state.data.flex3.tier)}`}/>
-                    <p className="league-type">{this.determineLeagueType(this.state.data.flex3.queueType)}</p>
-                    <p className="league">
-                      {this.state.data.flex3.tier} {this.state.data.flex3.rank}
-                      <p>{this.state.data.flex3.leaguePoints} LP</p>
-                    </p>
-                    <p className="league-win-loss">
-                      Wins: {this.state.data.flex3.wins} Losses: {this.state.data.flex3.losses}
-                      <p>Win
-                        ratio: {Math.floor((this.state.data.flex3.wins / (this.state.data.flex3.wins + this.state.data.flex3.losses)) * 100)}%</p>
-                    </p>
-                  </div> : this.unrankedLeaguePlaceholder()
-                }
-              </div>
+              <SummonerQueue
+                soloQ={this.state.data.soloQ}
+                flexQ={this.state.data.flexQ}
+                flex3={this.state.data.flex3}/>
               <div className="recent-matches">
                 {
                   this.state.data.recentMatches
