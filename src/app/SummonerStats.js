@@ -202,6 +202,8 @@ export default class SummonerStats extends Component {
                     .sort((a, b) => b.gameCreation - a.gameCreation)
                     .map(e => e.hasOwnProperty('gameId') ?
                       <Match
+                        gameDuration={e.gameDuration}
+                        timeAgo={this.calculateLastSeen(e.gameCreation)}
                         queueId={e.queueId}
                         mainSummoner={e.searchedSummoner}
                         allParticipants={
