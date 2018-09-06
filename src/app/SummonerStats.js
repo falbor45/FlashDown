@@ -9,7 +9,7 @@ import GoldLeague from './assets/gold.png'
 import SilverLeague from './assets/silver.png'
 import BronzeLeague from './assets/bronze.png'
 import UnrankedLeague from './assets/unranked.png'
-import MediaQuery from 'react-responsive'
+import Match from './Match.js'
 
 export default class SummonerStats extends Component {
   constructor(props) {
@@ -49,110 +49,6 @@ export default class SummonerStats extends Component {
       }
     }
   };
-
-  determineQueueType = queueId => {
-    switch (queueId) {
-      case 0: {
-        return "Custom game";
-      }
-      case 72:
-      case 73: {
-        return "Snowdown";
-      }
-      case 75: {
-        return "Hexakill";
-      }
-      case 76:
-      case 83: {
-        return "URF";
-      }
-      case 78:
-      case 1020: {
-        return "One for All";
-      }
-      case 98: {
-        return "3v3 Hexakill";
-      }
-      case 100:
-      case 450: {
-        return "ARAM";
-      }
-      case 310: {
-        return "Nemesis"
-      }
-      case 313: {
-        return "Black Market Brawlers";
-      }
-      case 317: {
-        return "Definitely Not Dominion";
-      }
-      case 325: {
-        return "SR ARAM";
-      }
-      case 400: {
-        return "5v5 Draft Pick"
-      }
-      case 420: {
-        return "5v5 Ranked Solo"
-      }
-      case 430: {
-        return "5v5 Blind Pick"
-      }
-      case 440: {
-        return "5v5 Ranked Flex"
-      }
-      case 460: {
-        return "3v3 Blind Pick"
-      }
-      case 470: {
-        return "3v3 Ranked Flex"
-      }
-      case 600: {
-        return "Blood Hunt Assassin"
-      }
-      case 610: {
-        return "Dark Star: Singularity"
-      }
-      case 700: {
-        return "Clash"
-      }
-      case 800:
-      case 810:
-      case 820:
-      case 830:
-      case 840:
-      case 850: {
-        return "vs. AI"
-      }
-      case 900:
-      case 1010: {
-        return "ARURF"
-      }
-      case 910: {
-        return "Ascension"
-      }
-      case 920: {
-        return "Legend of the Poro"
-      }
-      case 940: {
-        return "Nexus Siege"
-      }
-      case 950:
-      case 960: {
-        return "Doom Bots"
-      }
-      case 980:
-      case 990: {
-        return "Star Guardian Invasion"
-      }
-      case 1000: {
-        return "PROJECT: Hunters"
-      }
-      case 1200: {
-        return "Nexus Blitz"
-      }
-    }
-  }
 
   determineLeagueType = type => {
     switch (type) {
@@ -222,6 +118,13 @@ export default class SummonerStats extends Component {
           this.setState({
             data: {
               ...json,
+              recentMatches: json.recentMatches.map(e => {
+                return {
+                  ...e,
+                  searchedSummoner: this.mapParticipants(e.participants, e.participantIdentities)
+                    .filter(x => this.shortenSummonerName(x.summonerName) === this.shortenSummonerName(this.props.match.params.summonerName))[0]
+                }
+              }),
               soloQ: json.queueData.find(x => x.queueType === 'RANKED_SOLO_5x5') || null,
               flexQ: json.queueData.find(x => x.queueType === 'RANKED_FLEX_SR') || null,
               flex3: json.queueData.find(x => x.queueType === 'RANKED_FLEX_TT') || null,
@@ -298,85 +201,14 @@ export default class SummonerStats extends Component {
                   this.state.data.recentMatches
                     .sort((a, b) => b.gameCreation - a.gameCreation)
                     .map(e => e.hasOwnProperty('gameId') ?
-                        <div className="match">
-                          <div className="match-queue-type">
-                            <p>{this.determineQueueType(e.queueId)}</p>
-                          </div>
-                          <div className="main-match-details">
-                          {
-                            this.mapParticipants(e.participants, e.participantIdentities)
-                              .filter(x => this.shortenSummonerName(x.summonerName) === this.shortenSummonerName(this.props.match.params.summonerName))
-                              .map(e =>
-                                <div className="played-champion">
-                                  <div className="played-champion-icons">
-                                    <div className="played-champion-img">
-                                      <img src={e.champion.iconURL}/>
-                                    </div>
-                                    <div className="played-champion-spells">
-                                      <div>
-                                        <img src={e.spell1Id.image}/>
-                                        <img src={e.spell2Id.image}/>
-                                      </div>
-                                      <div>
-                                        <img src={e.stats.primaryPerk.slots[0].runes.find(el => el.id === e.stats.perk0).icon}/>
-                                        <img src={e.stats.secondaryPerk.icon}/>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <p className="played-champion-name">{e.champion.name}</p>
-                                  <p className={e.stats.win ? 'match-win' : 'match-lose'}>{e.stats.win ? 'Win' : 'Lose'}</p>
-                                </div>
-                              )
-                          }
-                          {
-                            this.mapParticipants(e.participants, e.participantIdentities)
-                              .filter(x => this.shortenSummonerName(x.summonerName) === this.shortenSummonerName(this.props.match.params.summonerName))
-                              .map(e =>
-                              <div className="kda">
-                                <p>
-                                  {e.stats.kills} /
-                                  <span> {e.stats.deaths} </span>
-                                   / {e.stats.assists}
-                                </p>
-                                <p>
-                                  {((e.stats.kills + e.stats.assists) / (e.stats.deaths || 1)).toFixed(2)}
-                                  <span> KDA</span>
-                                </p>
-                              </div>
-                              )
-                          }
-                          {
-                            this.mapParticipants(e.participants, e.participantIdentities)
-                              .filter(x => this.shortenSummonerName(x.summonerName) === this.shortenSummonerName(this.props.match.params.summonerName))
-                              .map(e =>
-                                <div className="item-list">
-                                  {
-                                    [0, 1, 2, 6, 3, 4, 5].map(el => e.stats[`item${el}`] !== null ?
-                                      <div>
-                                          <img src={e.stats[`item${el}`]}/>
-                                      </div> :
-                                      <div className="no-item">
-                                      </div>
-                                    )
-                                  }
-                                </div>
-                              )
-                          }
-                          <MediaQuery query="(min-width: 1200px)">
-                            <div style={{display: "flex", width: "35%", flexDirection: "row", flexWrap: "wrap", margin: "1rem", color: "white", fontSize: '1rem'}}>
-                            {
-                              this.mapParticipants(e.participants, e.participantIdentities)
-                                .map(e =>
-                                <div style={{flex: "1 0 34%", marginBottom: "3px"}}>
-                                  <img style={{width: "1rem", height: "1rem", verticalAlign: "middle"}} src={e.champion.iconURL}/>
-                                  <span><a href={`http://${window.location.host}/summoner/${this.props.match.params.leagueServer}/${this.shortenSummonerName(e.summonerName)}`}>{e.summonerName}</a></span>
-                                </div>
-                                )
-                            }
-                            </div>
-                          </MediaQuery>
-                          </div>
-                        </div> : <div></div>
+                      <Match
+                        queueId={e.queueId}
+                        mainSummoner={e.searchedSummoner}
+                        allParticipants={
+                          this.mapParticipants(e.participants, e.participantIdentities)
+                        }
+                        match={this.props.match}/>
+                      : <div></div>
                     )
                 }
               </div>
