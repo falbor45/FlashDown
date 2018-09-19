@@ -155,10 +155,13 @@ export default class Match extends Component {
                   <img src={this.props.mainSummoner.spell1Id.image}/>
                   <img src={this.props.mainSummoner.spell2Id.image}/>
                 </div>
-                <div>
-                  <img src={this.props.mainSummoner.stats.primaryPerk.slots[0].runes.find(el => el.id === this.props.mainSummoner.stats.perk0).icon}/>
-                  <img src={this.props.mainSummoner.stats.secondaryPerk.icon}/>
-                </div>
+                {
+                  this.props.mainSummoner.stats.hasOwnProperty('primaryPerk') ?
+                    <div>
+                      <img src={this.props.mainSummoner.stats.primaryPerk.slots[0].runes.find(el => el.id === this.props.mainSummoner.stats.perk0).icon}/>
+                      <img src={this.props.mainSummoner.stats.secondaryPerk.icon}/>
+                    </div> : <div></div>
+                }
               </div>
             </div>
             <p className="played-champion-name">{this.props.mainSummoner.champion.name}</p>
