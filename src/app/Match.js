@@ -176,8 +176,7 @@ export default class Match extends Component {
                 <div>
                   {
                     this.props.mainSummoner.stats.hasOwnProperty('primaryPerk') ?
-                      <img
-                        src={this.props.mainSummoner.stats.primaryPerk.slots[0].runes.find(el => el.id === this.props.mainSummoner.stats.perk0).icon}/> : null
+                      <img src={this.props.mainSummoner.stats.primaryPerk.slots[0].runes.find(el => el.id === this.props.mainSummoner.stats.perk0).icon}/> : null
                   }
                   {
                     this.props.mainSummoner.stats.hasOwnProperty('secondaryPerk') ?
@@ -217,8 +216,9 @@ export default class Match extends Component {
                 this.props.allParticipants.map(e =>
                     <div>
                       <img src={e.champion.iconURL}/>
-                      <span><a
-                        href={`http://${window.location.host}/summoner/${this.props.match.params.leagueServer}/${this.shortenSummonerName(e.summonerName)}`}>{e.summonerName}</a></span>
+                      <div>
+                        <a href={`http://${window.location.host}/summoner/${this.props.match.params.leagueServer}/${this.shortenSummonerName(e.summonerName)}`}>{e.summonerName}</a>
+                      </div>
                     </div>
                   )
               }

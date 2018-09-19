@@ -80,7 +80,7 @@
 
 .match-queue-type {
   display: inline-block;
-  width: 80%;
+  width: 90%;
   padding: 0 1rem;
   background: #FFAE00;
   font-weight: bold;
@@ -88,7 +88,7 @@
   font-size: 2rem; }
   @media screen and (min-width: 1200px) {
     .match-queue-type {
-      width: 40%;
+      width: 50%;
       font-size: 1rem; } }
 
 .kda {
@@ -165,12 +165,20 @@
   margin: 1rem;
   color: #FFFFFF;
   font-size: 1rem; }
-  .participants div {
-    flex: 1 0 34%;
+  .participants > div {
+    display: flex;
+    width: 50%;
     margin-bottom: 3px; }
-    .participants div img {
+    .participants > div img {
       width: 1rem;
       height: 1rem;
       vertical-align: middle; }
+    .participants > div a {
+      display: block;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden; }
+    .participants > div > div {
+      max-width: 80%; }
 
 /*# sourceMappingURL=Match.css.map */
