@@ -22,6 +22,8 @@ export default class RoomManager {
     }
 
     this.rooms[roomCode] = data;
+
+    return roomCode;
   };
 
   createRoomCode() {

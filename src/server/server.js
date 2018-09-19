@@ -6,6 +6,7 @@ import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import { StaticRouter } from 'react-router'
 import streamString from 'node-stream-string'
+import RoomManager from './RoomManager'
 
 import App from '../app/App.js'
 import Html from '../Html'
@@ -25,6 +26,7 @@ api.use( (req, res, next) => {
 });
 
 let arr = [];
+let rooms = new RoomManager();
 
 let summonerSpells;
 let champions;
@@ -258,11 +260,24 @@ api.get('/summoner/:leagueServer/:summonerName', (req, res) => {
     .catch(err => console.log(err))
 });
 
-api.get('/create-watcher/:leagueServer/:summonerName', (req, res) => {
+api.get('/create-game-room/:leagueServer/:summonerName', (req, res) => {
   let leagueServer = req.params.leagueServer;
   let summonerName = req.params.summonerName;
   let summonerId;
-  fetch(`https://${leagueServer}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${summonerName}?api_key=${API_KEY}`)
+
+  let regionMap = {
+    "eune": "eun1",
+    "euw": "euw1",
+    "jp": "jp1",
+    "las": "la2",
+    "lan": "la1",
+    "na": "na1",
+    "oce": "oc1",
+    "ru": "ru",
+    "tr": "tr1",
+    "br": "br1"
+  };
+  fetch(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${summonerName}?api_key=${API_KEY}`)
     .then(response => response.json())
     .then(response => {
       if (arr.includes(response.id)) {
@@ -272,7 +287,8 @@ api.get('/create-watcher/:leagueServer/:summonerName', (req, res) => {
       summonerId = response.id;
       arr.push(summonerId);
       let gameData;
-      fetch(`https://${leagueServer}.api.riotgames.com/lol/spectator/v3/active-games/by-summoner/${summonerId}?api_key=${API_KEY}`)
+      let roomCode;
+      fetch(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/spectator/v3/active-games/by-summoner/${summonerId}?api_key=${API_KEY}`)
         .then(response => response.json())
         .then(json => {
           gameData = {
@@ -292,26 +308,19 @@ api.get('/create-watcher/:leagueServer/:summonerName', (req, res) => {
             platformId: json.platformId,
             bannedChampions: json.bannedChampions,
             gameStartTime: json.gameStartTime
-          }
+          };
+          roomCode = rooms.createRoom(gameData)
+          res.send(`Watcher has been created. Go to /gamerooms/${roomCode}`)
         })
-        .catch(error => res.send(error))
-
-      api.route(`/watchers/${encode(summonerName)}`)
-        .get((req, res) => {
-          res.send(gameData)
-        })
-        .post((req, res) => {
-          if (req.body.action === 'updateSummonerSpell') {
-            gameData = updateSummonerSpellCD(gameData, req.body.summonerName, req.body.spell);
-            res.send(`${req.body.summonerName}'s spell has been updated!`)
-            return null;
-          }
-          res.send('No action specified!')
-        });
-      res.send(`Watcher has been created. Go to /watchers/${encode(summonerName)}`)
+        .catch(error => console.log(error));
     })
-    .catch(error => res.send(error))
+    .catch(error => console.log(error))
 });
+
+api.route('/gamerooms/:roomCode')
+  .get((req, res) => {
+    res.send(rooms.getRoom(req.params.roomCode));
+  });
 
 app.listen(80, function () {
   console.log('listening on *:80');
