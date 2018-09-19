@@ -103,8 +103,26 @@ export default class Match extends Component {
       case 1000: {
         return "PROJECT: Hunters"
       }
+      case 1030: {
+        return "Odyssey: Extraction Intro"
+      }
+      case 1040: {
+        return "Odyssey: Extraction Cadet"
+      }
+      case 1050: {
+        return "Odyssey: Extraction Crewmember"
+      }
+      case 1060: {
+        return "Odyssey: Extraction Captain"
+      }
+      case 1070: {
+        return "Odyssey: Extraction Onslaught"
+      }
       case 1200: {
         return "Nexus Blitz"
+      }
+      default: {
+        return "Unknown game mode"
       }
     }
   };
