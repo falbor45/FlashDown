@@ -15,10 +15,11 @@ const API_KEY = '';
 
 const app = express();
 app.use(express.static(path.join(__dirname)));
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
 
 const api = express();
+api.use(bodyParser.urlencoded({extended: true}));
+api.use(bodyParser.json());
+
 api.use( (req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -320,7 +321,15 @@ api.get('/create-game-room/:leagueServer/:summonerName', (req, res) => {
 api.route('/gamerooms/:roomCode')
   .get((req, res) => {
     res.send(rooms.getRoom(req.params.roomCode));
-  });
+  })
+  .post((req, res) => {
+    if (req.body.action === 'updateSummonerSpell') {
+      rooms.rooms[req.params.roomCode] = updateSummonerSpellCD(rooms.rooms[req.params.roomCode], req.body.summonerName, req.body.spell);
+      res.send(`${req.body.summonerName}'s spell has been updated!`)
+      return null;
+    }
+    res.send('No action specified!')
+  })
 
 app.listen(80, function () {
   console.log('listening on *:80');
