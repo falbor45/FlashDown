@@ -74,7 +74,8 @@ let encode = string => {
 };
 
 // data argument is the data key coming from http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/summoner.json
-let mapSummonerSpellId = (data, spellId, gameWatcher) => {
+let mapSummonerSpellId = (data, spellId, gameWatcher, cosmicInsight) => {
+  let cooldownMultiplier = cosmicInsight ? 0.95 : 1;
   for (let prop in data) {
     if (data.hasOwnProperty(prop)) {
       if (parseInt(data[prop].key) === spellId) {
@@ -85,7 +86,7 @@ let mapSummonerSpellId = (data, spellId, gameWatcher) => {
             cooldown: parseInt(data[prop].cooldownBurn),
             image: data[prop].image,
             used: new Date().getTime(),
-            available: new Date().getTime() + (data[prop].cooldownBurn * 1000)
+            available: new Date().getTime() + (data[prop].cooldownBurn * cooldownMultiplier * 1000)
           }
         }
         return {
@@ -170,10 +171,38 @@ let mapMatch = data => {
 let updateSummonerSpellCD = (data, summonerName, spell) => {
   let newData = data;
   let whichSpell = spell === '1' ? 'spell1' : 'spell2';
+  let cooldownMultiplier = 1;
+  let cosmicInsight = false;
+  let lucidityBoots = false;
   for (let i = 0; i < newData.participants.length; i++) {
     if (newData.participants[i].summonerName === summonerName) {
+      if (newData.participants[i].perks.perkIds.includes(8347)) {
+        cosmicInsight = true;
+      }
+      if (newData.participants[i].lucidityBoots) {
+        lucidityBoots = true;
+      }
+      if (cosmicInsight && lucidityBoots) {
+        cooldownMultiplier = 0.85;
+      }
+      if (cosmicInsight && !lucidityBoots) {
+        cooldownMultiplier = 0.95;
+      }
+      if (!cosmicInsight && lucidityBoots) {
+        cooldownMultiplier = 0.9;
+      }
       newData.participants[i][whichSpell].used = new Date().getTime();
-      newData.participants[i][whichSpell].available = new Date().getTime() + (newData.participants[i][whichSpell].cooldown * 1000)
+      newData.participants[i][whichSpell].available = new Date().getTime() + ((newData.participants[i][whichSpell].cooldown * cooldownMultiplier) * 1000)
+    }
+  }
+  return newData;
+};
+
+let updateLucidity = (data, summonerName) => {
+  let newData = data;
+  for (let i = 0; i < newData.participants.length; i++) {
+    if (newData.participants[i].summonerName === summonerName) {
+      newData.participants[i].lucidityBoots = !newData.participants[i].lucidityBoots;
     }
   }
   return newData;
@@ -302,8 +331,9 @@ api.get('/create-game-room/:leagueServer/:summonerName', (req, res) => {
                 championId: e.championId,
                 summonerName: e.summonerName,
                 perks: e.perks,
-                spell1: mapSummonerSpellId(summonerSpells.data, e.spell1Id, true),
-                spell2: mapSummonerSpellId(summonerSpells.data, e.spell2Id, true)
+                spell1: mapSummonerSpellId(summonerSpells.data, e.spell1Id, true, e.perks.perkIds.includes(8347)),
+                spell2: mapSummonerSpellId(summonerSpells.data, e.spell2Id, true, e.perks.perkIds.includes(8347)),
+                lucidityBoots: false
               }
             }),
             platformId: json.platformId,
@@ -325,11 +355,16 @@ api.route('/gamerooms/:roomCode')
   .post((req, res) => {
     if (req.body.action === 'updateSummonerSpell') {
       rooms.rooms[req.params.roomCode] = updateSummonerSpellCD(rooms.rooms[req.params.roomCode], req.body.summonerName, req.body.spell);
-      res.send(`${req.body.summonerName}'s spell has been updated!`)
+      res.send(`${req.body.summonerName}'s spell has been updated!`);
+      return null;
+    }
+    if (req.body.action === 'updateLucidity') {
+      rooms.rooms[req.params.roomCode] = updateLucidity(rooms.rooms[req.params.roomCode], req.body.summonerName);
+      res.send(`${req.body.summonerName}'s lucidity boots have been updated!`);
       return null;
     }
     res.send('No action specified!')
-  })
+  });
 
 app.listen(80, function () {
   console.log('listening on *:80');
