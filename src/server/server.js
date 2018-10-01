@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 import path from 'path';
 import 'fetch-everywhere'
 import bodyParser from 'body-parser'
@@ -20,11 +21,8 @@ const api = express();
 api.use(bodyParser.urlencoded({extended: true}));
 api.use(bodyParser.json());
 
-api.use( (req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+app.use(cors());
+api.use(cors());
 
 let arr = [];
 let rooms = new RoomManager();
@@ -84,7 +82,7 @@ let mapSummonerSpellId = (data, spellId, gameWatcher, cosmicInsight) => {
             name: data[prop].name,
             description: data[prop].description,
             cooldown: parseInt(data[prop].cooldownBurn),
-            image: data[prop].image,
+            image: `http://ddragon.leagueoflegends.com/cdn/${latestVersion}/img/spell/${data[prop].image.full}`,
             used: new Date().getTime(),
             available: new Date().getTime() + (data[prop].cooldownBurn * cooldownMultiplier * 1000)
           }
@@ -328,7 +326,7 @@ api.get('/create-game-room/:leagueServer/:summonerName', (req, res) => {
             participants: json.participants.map(e => {
               return {
                 teamId: e.teamId,
-                championId: e.championId,
+                championId: mapChampionId(champions.data, e.championId),
                 summonerName: e.summonerName,
                 perks: e.perks,
                 spell1: mapSummonerSpellId(summonerSpells.data, e.spell1Id, true, e.perks.perkIds.includes(8347)),
@@ -354,12 +352,12 @@ api.route('/gamerooms/:roomCode')
   })
   .post((req, res) => {
     if (req.body.action === 'updateSummonerSpell') {
-      rooms.rooms[req.params.roomCode] = updateSummonerSpellCD(rooms.rooms[req.params.roomCode], req.body.summonerName, req.body.spell);
+      rooms.rooms[req.body.roomCode] = updateSummonerSpellCD(rooms.rooms[req.body.roomCode], req.body.summonerName, req.body.spell);
       res.send(`${req.body.summonerName}'s spell has been updated!`);
       return null;
     }
     if (req.body.action === 'updateLucidity') {
-      rooms.rooms[req.params.roomCode] = updateLucidity(rooms.rooms[req.params.roomCode], req.body.summonerName);
+      rooms.rooms[req.body.roomCode] = updateLucidity(rooms.rooms[req.body.roomCode], req.body.summonerName);
       res.send(`${req.body.summonerName}'s lucidity boots have been updated!`);
       return null;
     }
