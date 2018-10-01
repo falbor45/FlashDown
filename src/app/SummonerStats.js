@@ -10,7 +10,8 @@ export default class SummonerStats extends Component {
 
     this.state = {
       data: null,
-      fetched: false
+      fetched: false,
+      roomCode: null
     }
   }
 
@@ -53,6 +54,23 @@ export default class SummonerStats extends Component {
     return result;
   };
 
+  showLiveGame = () => {
+    if (this.state.roomCode !== null) {
+      window.open(`http://${window.location.host}/gamerooms/${this.state.roomCode}`, '_blank')
+      return null;
+    }
+    fetch(`http://${window.location.host}:3000/create-game-room/${this.props.match.params.leagueServer}/${this.props.match.params.summonerName}`)
+      .then(response => response.json())
+      .then(json => {
+        console.log(json);
+        this.setState({
+          roomCode: json.roomCode
+        })
+      })
+      .then(() => window.open(`http://${window.location.host}/gamerooms/${this.state.roomCode}`, '_blank'))
+      .catch(err => console.log(err));
+  };
+
 
   render() {
     if (typeof window !== 'undefined' && !this.state.fetched) {
@@ -92,6 +110,9 @@ export default class SummonerStats extends Component {
                 <div className="summoner-misc-info">
                   <p className="summoner-name">{this.state.data.name}</p>
                   <p className="summoner-last-seen">Last seen: {this.calculateLastSeen(this.state.data.lastSeen)}</p>
+                  <button onClick={() => this.showLiveGame()}
+                          className="summoner-live-game"
+                          type="button">Live game</button>
                 </div>
               </div>
               <SummonerQueue

@@ -1,0 +1,77 @@
+.live-game-container {
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 32px;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.8);
+  border: 1px solid #FFAE00;
+  z-index: 99;
+  color: #FFFFFF; }
+  @media screen and (min-width: 1200px) {
+    .live-game-container {
+      margin-top: 64px; } }
+
+.live-game-header {
+  text-align: center; }
+  .live-game-header > p:first-child {
+    font-size: 2rem;
+    color: #FFAE00; }
+
+.live-game-participants {
+  display: flex; }
+  .live-game-participants .team-blue, .live-game-participants .team-red {
+    display: inline-block;
+    width: 45%;
+    margin: 0 auto;
+    margin-top: 32px;
+    vertical-align: top; }
+    @media screen and (min-width: 1200px) {
+      .live-game-participants .team-blue, .live-game-participants .team-red {
+        margin-top: 64px; } }
+    .live-game-participants .team-blue .live-game-summoner-name, .live-game-participants .team-red .live-game-summoner-name {
+      display: flex;
+      max-width: 50%;
+      justify-content: space-between;
+      align-items: center; }
+      .live-game-participants .team-blue .live-game-summoner-name > p, .live-game-participants .team-red .live-game-summoner-name > p {
+        font-size: 2rem;
+        font-weight: bold;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden; }
+    .live-game-participants .team-blue > div, .live-game-participants .team-red > div {
+      display: flex;
+      flex-direction: row; }
+  .live-game-participants .team-blue > div {
+    justify-content: flex-end; }
+  .live-game-participants .live-game-champion img {
+    width: 60px;
+    height: auto;
+    border-radius: 10%; }
+    @media screen and (min-width: 1200px) {
+      .live-game-participants .live-game-champion img {
+        width: 120px; } }
+  .live-game-participants .live-game-spells {
+    display: flex;
+    justify-content: space-around;
+    align-items: center; }
+    .live-game-participants .live-game-spells img {
+      width: 60px;
+      height: auto;
+      border-radius: 10%; }
+    .live-game-participants .live-game-spells .on-cooldown {
+      opacity: 0.5; }
+    .live-game-participants .live-game-spells > div {
+      position: relative; }
+      .live-game-participants .live-game-spells > div span {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        transform: translate(0, -50%);
+        font-weight: bold; }
+    @media screen and (min-width: 1200px) {
+      .live-game-participants .live-game-spells {
+        flex-direction: column; } }
+
+/*# sourceMappingURL=LiveGame.css.map */

@@ -64,6 +64,16 @@
     .summoner-last-seen {
       font-size: 0.875rem; } }
 
+.summoner-live-game {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 1px solid #FFAE00;
+  color: white;
+  font-size: 1.25rem;
+  font-weight: bold;
+  font-family: inherit; }
+
 .recent-matches {
   width: 90%;
   margin: 0 auto;

@@ -1,0 +1,117 @@
+import React, {Component} from 'react';
+import './LiveGame.css'
+import {determineQueueType} from './Helpers';
+
+export default class LiveGame extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      data: null,
+      currentTime: setInterval(() => this.setState({
+        currentTime: new Date().getTime()
+      }))
+    };
+  }
+
+  fetchRoom = () => {
+    fetch(`http://${window.location.host}:3000/gamerooms/${this.props.match.params.roomCode}`)
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          data: json
+        })
+      });
+  };
+
+  flashDown = (action, summonerName, spell) => {
+    const options = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        action: action,
+        summonerName: summonerName,
+        spell: spell,
+        roomCode: this.props.match.params.roomCode
+      })
+    };
+
+
+    fetch(`http://${window.location.host}:3000/gamerooms/${this.props.match.params.roomCode}`, options)
+      .then(() => this.fetchRoom());
+    return null;
+  };
+
+  componentDidMount() {
+    this.fetchRoom();
+  }
+
+  render() {
+    return (
+      this.state.data !== null ?
+        <div className="live-game-container">
+          <div className="live-game-header">
+            <p>{determineQueueType(this.state.data.gameQueueConfigId)}</p>
+            <p>Room: {this.props.match.params.roomCode}</p>
+            <div className="live-game-participants">
+              <div className="team-blue">
+                {
+                  this.state.data.participants
+                    .filter(e => e.teamId === 100)
+                    .map(e => (
+                      <div>
+                        <div className="live-game-summoner-name">
+                          <p>{e.summonerName}</p>
+                        </div>
+                        <div className="live-game-champion">
+                          <img src={e.championId.iconURL}/>
+                        </div>
+                        <div className="live-game-spells">
+                          <div className={this.state.currentTime < e.spell1.available ? 'on-cooldown' : null}>
+                            <img onClick={() => this.flashDown('updateSummonerSpell', e.summonerName, '1')} src={e.spell1.image}/>
+                            <span>{e.spell1.available - this.state.currentTime > 0 ? Math.floor((e.spell1.available - this.state.currentTime) / 1000) : null}</span>
+                          </div>
+                          <div className={this.state.currentTime < e.spell2.available ? 'on-cooldown' : null}>
+                            <img onClick={() => this.flashDown('updateSummonerSpell', e.summonerName, '2')} src={e.spell2.image}/>
+                            <span>{e.spell2.available - this.state.currentTime > 0 ? Math.floor((e.spell2.available - this.state.currentTime) / 1000) : null}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                }
+              </div>
+              <div className="team-red">
+                {
+                  this.state.data.participants
+                    .filter(e => e.teamId === 200)
+                    .map(e => (
+                      <div>
+                        <div className="live-game-spells">
+                          <div className={this.state.currentTime < e.spell1.available ? 'on-cooldown' : null}>
+                            <img onClick={() => this.flashDown('updateSummonerSpell', e.summonerName, '1')} src={e.spell1.image}/>
+                            <span>{e.spell1.available - this.state.currentTime > 0 ? Math.floor((e.spell1.available - this.state.currentTime) / 1000) : null}</span>
+                          </div>
+                          <div className={this.state.currentTime < e.spell2.available ? 'on-cooldown' : null}>
+                            <img onClick={() => this.flashDown('updateSummonerSpell', e.summonerName, '2')} src={e.spell2.image}/>
+                            <span>{e.spell2.available - this.state.currentTime > 0 ? Math.floor((e.spell2.available - this.state.currentTime) / 1000) : null}</span>
+                          </div>
+                        </div>
+                        <div className="live-game-champion">
+                          <img src={e.championId.iconURL}/>
+                        </div>
+                        <div className="live-game-summoner-name">
+                          <p>{e.summonerName}</p>
+                        </div>
+                      </div>
+                    ))
+                }
+              </div>
+            </div>
+          </div>
+        </div> : <div>Loading</div>
+    )
+  }
+}
