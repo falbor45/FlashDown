@@ -84,7 +84,7 @@ let mapSummonerSpellId = (data, spellId, gameWatcher, cosmicInsight) => {
             cooldown: parseInt(data[prop].cooldownBurn),
             image: `http://ddragon.leagueoflegends.com/cdn/${latestVersion}/img/spell/${data[prop].image.full}`,
             used: new Date().getTime(),
-            available: new Date().getTime() + (data[prop].cooldownBurn * cooldownMultiplier * 1000)
+            available: new Date().getTime()
           }
         }
         return {
@@ -329,8 +329,8 @@ api.get('/create-game-room/:leagueServer/:summonerName', (req, res) => {
                 championId: mapChampionId(champions.data, e.championId),
                 summonerName: e.summonerName,
                 perks: e.perks,
-                spell1: mapSummonerSpellId(summonerSpells.data, e.spell1Id, true, e.perks.perkIds.includes(8347)),
-                spell2: mapSummonerSpellId(summonerSpells.data, e.spell2Id, true, e.perks.perkIds.includes(8347)),
+                spell1: mapSummonerSpellId(summonerSpells.data, e.spell1Id, true, e.perks.perkIds.includes(8347), true),
+                spell2: mapSummonerSpellId(summonerSpells.data, e.spell2Id, true, e.perks.perkIds.includes(8347), true),
                 lucidityBoots: false
               }
             }),
