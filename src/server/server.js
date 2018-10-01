@@ -310,16 +310,16 @@ api.get('/create-game-room/:leagueServer/:summonerName', (req, res) => {
   fetch(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${summonerName}?api_key=${API_KEY}`)
     .then(response => response.json())
     .then(response => {
-      if (arr.includes(response.id)) {
-        res.send('Whoops, it looks like this summoner tracker is already up and running!');
-        return null;
-      }
       summonerId = response.id;
-      arr.push(summonerId);
       let gameData;
       let roomCode;
       fetch(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/spectator/v3/active-games/by-summoner/${summonerId}?api_key=${API_KEY}`)
-        .then(response => response.json())
+        .then(response => {
+          if (response.status === 200) {
+            return response.json();
+          }
+          res.status(404).send({error_code: 404, message: "Player is currently not in game"})
+        })
         .then(json => {
           gameData = {
             mapId: json.mapId,
@@ -340,8 +340,8 @@ api.get('/create-game-room/:leagueServer/:summonerName', (req, res) => {
             bannedChampions: json.bannedChampions,
             gameStartTime: json.gameStartTime
           };
-          roomCode = rooms.createRoom(gameData)
-          res.send(`Watcher has been created. Go to /gamerooms/${roomCode}`)
+          roomCode = rooms.createRoom(gameData);
+          res.status(200).send({roomCode: roomCode});
         })
         .catch(error => console.log(error));
     })
