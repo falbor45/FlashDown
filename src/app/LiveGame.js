@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './LiveGame.css'
+import lucidityBoots from './assets/lucidityBoots.png'
 import {determineQueueType} from './Helpers';
 
 export default class LiveGame extends Component {
@@ -24,7 +25,7 @@ export default class LiveGame extends Component {
       });
   };
 
-  flashDown = (action, summonerName, spell) => {
+  flashDown = (action, summonerName, spell = null) => {
     const options = {
       method: 'POST',
       headers: {
@@ -65,17 +66,18 @@ export default class LiveGame extends Component {
                       <div>
                         <div className="live-game-summoner-name">
                           <p>{e.summonerName}</p>
+                          <img onClick={() => this.flashDown('updateLucidity', e.summonerName)} className={`live-game-boots ${!e.lucidityBoots ? "on-cooldown" : null}`} src={`/${lucidityBoots}`}/>
                         </div>
                         <div className="live-game-champion">
                           <img src={e.championId.iconURL}/>
                         </div>
                         <div className="live-game-spells">
-                          <div className={this.state.currentTime < e.spell1.available ? 'on-cooldown' : null}>
-                            <img onClick={() => this.flashDown('updateSummonerSpell', e.summonerName, '1')} src={e.spell1.image}/>
+                          <div>
+                            <img className={this.state.currentTime < e.spell1.available ? 'on-cooldown' : null} onClick={() => this.flashDown('updateSummonerSpell', e.summonerName, '1')} src={e.spell1.image}/>
                             <span>{e.spell1.available - this.state.currentTime > 0 ? Math.floor((e.spell1.available - this.state.currentTime) / 1000) : null}</span>
                           </div>
-                          <div className={this.state.currentTime < e.spell2.available ? 'on-cooldown' : null}>
-                            <img onClick={() => this.flashDown('updateSummonerSpell', e.summonerName, '2')} src={e.spell2.image}/>
+                          <div>
+                            <img className={this.state.currentTime < e.spell2.available ? 'on-cooldown' : null} onClick={() => this.flashDown('updateSummonerSpell', e.summonerName, '2')} src={e.spell2.image}/>
                             <span>{e.spell2.available - this.state.currentTime > 0 ? Math.floor((e.spell2.available - this.state.currentTime) / 1000) : null}</span>
                           </div>
                         </div>
@@ -90,12 +92,12 @@ export default class LiveGame extends Component {
                     .map(e => (
                       <div>
                         <div className="live-game-spells">
-                          <div className={this.state.currentTime < e.spell1.available ? 'on-cooldown' : null}>
-                            <img onClick={() => this.flashDown('updateSummonerSpell', e.summonerName, '1')} src={e.spell1.image}/>
+                          <div>
+                            <img className={this.state.currentTime < e.spell1.available ? 'on-cooldown' : null} onClick={() => this.flashDown('updateSummonerSpell', e.summonerName, '1')} src={e.spell1.image}/>
                             <span>{e.spell1.available - this.state.currentTime > 0 ? Math.floor((e.spell1.available - this.state.currentTime) / 1000) : null}</span>
                           </div>
-                          <div className={this.state.currentTime < e.spell2.available ? 'on-cooldown' : null}>
-                            <img onClick={() => this.flashDown('updateSummonerSpell', e.summonerName, '2')} src={e.spell2.image}/>
+                          <div>
+                            <img className={this.state.currentTime < e.spell2.available ? 'on-cooldown' : null} onClick={() => this.flashDown('updateSummonerSpell', e.summonerName, '2')} src={e.spell2.image}/>
                             <span>{e.spell2.available - this.state.currentTime > 0 ? Math.floor((e.spell2.available - this.state.currentTime) / 1000) : null}</span>
                           </div>
                         </div>
@@ -103,6 +105,7 @@ export default class LiveGame extends Component {
                           <img src={e.championId.iconURL}/>
                         </div>
                         <div className="live-game-summoner-name">
+                          <img onClick={() => this.flashDown('updateLucidity', e.summonerName)} className={`live-game-boots ${!e.lucidityBoots ? "on-cooldown" : null}`} src={`/${lucidityBoots}`}/>
                           <p>{e.summonerName}</p>
                         </div>
                       </div>
