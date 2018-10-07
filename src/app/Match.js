@@ -2,9 +2,17 @@ import React, { Component } from 'react'
 import './Match.css'
 import MediaQuery from 'react-responsive'
 import { determineQueueType } from './Helpers.js';
+import MatchDetails from './MatchDetails'
 
 
 export default class Match extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      dropdownOpened: false
+    }
+  }
 
 
   shortenSummonerName = summonerName => summonerName.replace(' ', '').toLowerCase();
@@ -122,6 +130,18 @@ export default class Match extends Component {
               </div>
             </div>
           </MediaQuery>
+        </div>
+        {
+          this.state.dropdownOpened ?
+            <MatchDetails/> : <div></div>
+        }
+        <div className="match-dropdown" onClick={() => this.setState({ dropdownOpened: !this.state.dropdownOpened })}>
+          {
+            this.state.dropdownOpened ?
+              <div className="arrow-up"></div> :
+              <div className="arrow-down"></div>
+
+          }
         </div>
       </div>
     )
