@@ -92,8 +92,11 @@ export default class Match extends Component {
           </div>
           <MediaQuery query="(min-width: 1200px)">
             <div className="participants">
-              {
-                this.props.allParticipants.map(e =>
+              <div>
+                {
+                  this.props.allParticipants
+                    .filter(e => e.teamId === 100)
+                    .map(e =>
                     <div>
                       <img src={e.champion.iconURL}/>
                       <div>
@@ -101,7 +104,22 @@ export default class Match extends Component {
                       </div>
                     </div>
                   )
-              }
+                }
+              </div>
+              <div>
+                {
+                  this.props.allParticipants
+                    .filter(e => e.teamId === 200)
+                    .map(e =>
+                      <div>
+                        <img src={e.champion.iconURL}/>
+                        <div>
+                          <a href={`http://${window.location.host}/summoner/${this.props.match.params.leagueServer}/${this.shortenSummonerName(e.summonerName)}`}>{e.summonerName}</a>
+                        </div>
+                      </div>
+                    )
+                }
+              </div>
             </div>
           </MediaQuery>
         </div>
