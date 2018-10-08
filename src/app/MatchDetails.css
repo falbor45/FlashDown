@@ -1,0 +1,72 @@
+.match-details {
+  padding: 0.5rem 1rem; }
+
+.champion-select {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1rem; }
+  .champion-select > div {
+    width: 60px;
+    height: 60px; }
+    .champion-select > div img {
+      width: 100%;
+      height: auto;
+      opacity: 0.5;
+      transition: 0.5s; }
+    .champion-select > div img.selected {
+      opacity: 1; }
+
+.champion-stats {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; }
+
+.champion-stats-item {
+  flex: 1 0 34%;
+  margin-bottom: 0.5rem; }
+  .champion-stats-item p {
+    margin-bottom: 0.5rem;
+    text-align: center;
+    font-size: 1.5rem;
+    color: #FFFFFF;
+    font-weight: bold; }
+  .champion-stats-item > div {
+    display: inline-block;
+    width: 50%;
+    vertical-align: top; }
+    .champion-stats-item > div > div {
+      display: flex;
+      margin-bottom: 0.25rem; }
+      .champion-stats-item > div > div img {
+        width: 30px;
+        height: 30px; }
+  .champion-stats-item > div:last-child > div {
+    justify-content: flex-end; }
+
+.progress-bar {
+  position: relative;
+  width: 50%;
+  height: 30px;
+  border: 1px solid #FFAE00;
+  background-color: #000000; }
+  .progress-bar > p {
+    position: absolute;
+    font-size: 1rem;
+    font-weight: normal;
+    top: 50%;
+    right: 0;
+    left: 0;
+    transform: translate(0, -50%); }
+  .progress-bar > div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 28px;
+    background-color: #FFAE00; }
+
+.progress-bar.right {
+  background-color: #FFAE00; }
+  .progress-bar.right > div {
+    background-color: #000000; }
+
+/*# sourceMappingURL=MatchDetails.css.map */

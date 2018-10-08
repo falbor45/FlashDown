@@ -133,14 +133,13 @@ export default class Match extends Component {
         </div>
         {
           this.state.dropdownOpened ?
-            <MatchDetails/> : <div></div>
+            <MatchDetails allParticipants={this.props.allParticipants}/> : <div></div>
         }
         <div className="match-dropdown" onClick={() => this.setState({ dropdownOpened: !this.state.dropdownOpened })}>
           {
             this.state.dropdownOpened ?
               <div className="arrow-up"></div> :
               <div className="arrow-down"></div>
-
           }
         </div>
       </div>
