@@ -1,0 +1,82 @@
+.match-overview {
+  color: #FFFFFF; }
+  .match-overview .team-blue .scoreboard-header, .match-overview .team-red .scoreboard-header {
+    display: flex;
+    justify-content: space-around;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-align: center; }
+    .match-overview .team-blue .scoreboard-header > p, .match-overview .team-red .scoreboard-header > p {
+      width: 16.66%; }
+    .match-overview .team-blue .scoreboard-header > p:first-child, .match-overview .team-blue .scoreboard-header p:nth-child(2), .match-overview .team-red .scoreboard-header > p:first-child, .match-overview .team-red .scoreboard-header p:nth-child(2) {
+      width: 25%; }
+  .match-overview .team-blue .scoreboard-row, .match-overview .team-red .scoreboard-row {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 0.5rem; }
+    .match-overview .team-blue .scoreboard-row .scoreboard-champion, .match-overview .team-red .scoreboard-row .scoreboard-champion {
+      display: flex;
+      width: 25%; }
+      .match-overview .team-blue .scoreboard-row .scoreboard-champion .scoreboard-champion-icon, .match-overview .team-red .scoreboard-row .scoreboard-champion .scoreboard-champion-icon {
+        width: 32px;
+        height: 32px; }
+        .match-overview .team-blue .scoreboard-row .scoreboard-champion .scoreboard-champion-icon img, .match-overview .team-red .scoreboard-row .scoreboard-champion .scoreboard-champion-icon img {
+          width: 100%;
+          height: 100%; }
+      .match-overview .team-blue .scoreboard-row .scoreboard-champion .scoreboard-champion-spells, .match-overview .team-blue .scoreboard-row .scoreboard-champion .scoreboard-champion-runes, .match-overview .team-red .scoreboard-row .scoreboard-champion .scoreboard-champion-spells, .match-overview .team-red .scoreboard-row .scoreboard-champion .scoreboard-champion-runes {
+        display: flex;
+        flex-direction: column;
+        width: 16px;
+        height: 32px;
+        margin-left: 0.25rem; }
+        .match-overview .team-blue .scoreboard-row .scoreboard-champion .scoreboard-champion-spells img, .match-overview .team-blue .scoreboard-row .scoreboard-champion .scoreboard-champion-runes img, .match-overview .team-red .scoreboard-row .scoreboard-champion .scoreboard-champion-spells img, .match-overview .team-red .scoreboard-row .scoreboard-champion .scoreboard-champion-runes img {
+          width: 100%;
+          height: 50%; }
+    .match-overview .team-blue .scoreboard-row .scoreboard-summoner, .match-overview .team-red .scoreboard-row .scoreboard-summoner {
+      display: flex;
+      justify-content: space-around;
+      align-items: center; }
+    .match-overview .team-blue .scoreboard-row .scoreboard-items, .match-overview .team-red .scoreboard-row .scoreboard-items {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 25%; }
+      .match-overview .team-blue .scoreboard-row .scoreboard-items .scoreboard-item, .match-overview .team-red .scoreboard-row .scoreboard-items .scoreboard-item {
+        width: 24px;
+        height: 24px;
+        border-radius: 20%;
+        margin-right: 4px; }
+        .match-overview .team-blue .scoreboard-row .scoreboard-items .scoreboard-item img, .match-overview .team-red .scoreboard-row .scoreboard-items .scoreboard-item img {
+          width: 100%;
+          height: 100%; }
+      .match-overview .team-blue .scoreboard-row .scoreboard-items .scoreboard-no-item, .match-overview .team-red .scoreboard-row .scoreboard-items .scoreboard-no-item {
+        width: 24px;
+        height: 24px;
+        border-radius: 20%;
+        background: rgba(0, 0, 0, 0.3);
+        margin-right: 4px; }
+        .match-overview .team-blue .scoreboard-row .scoreboard-items .scoreboard-no-item img, .match-overview .team-red .scoreboard-row .scoreboard-items .scoreboard-no-item img {
+          width: 100%;
+          height: 100%; }
+    .match-overview .team-blue .scoreboard-row .scoreboard-kda, .match-overview .team-red .scoreboard-row .scoreboard-kda {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      width: 16.66%; }
+    .match-overview .team-blue .scoreboard-row .scoreboard-dmg, .match-overview .team-red .scoreboard-row .scoreboard-dmg {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      width: 16.66%; }
+    .match-overview .team-blue .scoreboard-row .scoreboard-gold, .match-overview .team-red .scoreboard-row .scoreboard-gold {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      width: 16.66%; }
+    .match-overview .team-blue .scoreboard-row .scoreboard-league, .match-overview .team-red .scoreboard-row .scoreboard-league {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      width: 16.66%; }
+
+/*# sourceMappingURL=MatchOverview.css.map */
