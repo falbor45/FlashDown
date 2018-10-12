@@ -24,7 +24,6 @@ api.use(bodyParser.json());
 app.use(cors());
 api.use(cors());
 
-let arr = [];
 let rooms = new RoomManager();
 
 let summonerSpells;
@@ -252,20 +251,23 @@ api.get('/summoner/:leagueServer/:summonerName', (req, res) => {
     return null;
   }
 
-  fetch(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${summonerName}?api_key=${API_KEY}`)
+  fetch(encodeURI(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${summonerName}?api_key=${API_KEY}`))
     .then(response => response.json())
     .then(json => {
+      console.log('test')
+      console.log(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${summonerName}?api_key=${API_KEY}`)
+      console.log(json)
       summonerData.name = json.name;
       summonerData.summonerLevel = json.summonerLevel;
       summonerData.lastSeen = json.revisionDate;
       summonerData.profileIconURL = `http://ddragon.leagueoflegends.com/cdn/${latestVersion}/img/profileicon/${json.profileIconId}.png`;
 
-      fetch(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/league/v3/positions/by-summoner/${json.id}?api_key=${API_KEY}`)
+      fetch(encodeURI(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/league/v3/positions/by-summoner/${json.id}?api_key=${API_KEY}`))
         .then(response => response.json())
         .then(json2 => {
           summonerData.queueData = json2;
 
-          fetch(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/match/v3/matchlists/by-account/${json.accountId}?endIndex=20&api_key=${API_KEY}`)
+          fetch(encodeURI(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/match/v3/matchlists/by-account/${json.accountId}?endIndex=20&api_key=${API_KEY}`))
             .then(response => response.json())
             .then(async json3 => {
               let matches = [];
@@ -305,13 +307,13 @@ api.get('/create-game-room/:leagueServer/:summonerName', (req, res) => {
     "tr": "tr1",
     "br": "br1"
   };
-  fetch(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${summonerName}?api_key=${API_KEY}`)
+  fetch(encodeURI(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${summonerName}?api_key=${API_KEY}`))
     .then(response => response.json())
     .then(response => {
       summonerId = response.id;
       let gameData;
       let roomCode;
-      fetch(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/spectator/v3/active-games/by-summoner/${summonerId}?api_key=${API_KEY}`)
+      fetch(encodeURI(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/spectator/v3/active-games/by-summoner/${summonerId}?api_key=${API_KEY}`))
         .then(response => {
           if (response.status === 200) {
             return response.json();
