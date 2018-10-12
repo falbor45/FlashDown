@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { shortenSummonerName } from './Helpers'
 import './MatchOverview.css'
 
 export default class MatchOverview extends Component {
@@ -38,7 +39,7 @@ export default class MatchOverview extends Component {
                         }
                       </div>
                       <div className="scoreboard-summoner">
-                        <p>{e.summonerName}</p>
+                        <a href={`http://${window.location.host}/summoner/${this.props.match.params.leagueServer}/${shortenSummonerName(e.summonerName)}`}>{e.summonerName}</a>
                       </div>
                     </div>
                     <div className="scoreboard-items">

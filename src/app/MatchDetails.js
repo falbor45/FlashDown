@@ -22,7 +22,7 @@ export default class MatchDetails extends Component {
         </div>
         {
           this.state.displayedComponent === 'matchOverview' ?
-            <MatchOverview allParticipants={this.props.allParticipants}/> :
+            <MatchOverview match={this.props.match} allParticipants={this.props.allParticipants}/> :
             this.state.displayedComponent === 'matchAnalysis' ?
               <MatchAnalysis allParticipants={this.props.allParticipants}/> :
               null

@@ -3,6 +3,7 @@ import './Match.css'
 import MediaQuery from 'react-responsive'
 import { determineQueueType } from './Helpers.js';
 import MatchDetails from './MatchDetails'
+import { shortenSummonerName } from './Helpers'
 
 
 export default class Match extends Component {
@@ -13,9 +14,6 @@ export default class Match extends Component {
       dropdownOpened: false
     }
   }
-
-
-  shortenSummonerName = summonerName => summonerName.replace(' ', '').toLowerCase();
 
   calculateLastSeen = time => {
     let seconds = (new Date().getTime() - time) / 1000;
@@ -108,7 +106,7 @@ export default class Match extends Component {
                     <div>
                       <img src={e.champion.iconURL}/>
                       <div>
-                        <a href={`http://${window.location.host}/summoner/${this.props.match.params.leagueServer}/${this.shortenSummonerName(e.summonerName)}`}>{e.summonerName}</a>
+                        <a href={`http://${window.location.host}/summoner/${this.props.match.params.leagueServer}/${shortenSummonerName(e.summonerName)}`}>{e.summonerName}</a>
                       </div>
                     </div>
                   )
@@ -122,7 +120,7 @@ export default class Match extends Component {
                       <div>
                         <img src={e.champion.iconURL}/>
                         <div>
-                          <a href={`http://${window.location.host}/summoner/${this.props.match.params.leagueServer}/${this.shortenSummonerName(e.summonerName)}`}>{e.summonerName}</a>
+                          <a href={`http://${window.location.host}/summoner/${this.props.match.params.leagueServer}/${shortenSummonerName(e.summonerName)}`}>{e.summonerName}</a>
                         </div>
                       </div>
                     )
@@ -133,7 +131,7 @@ export default class Match extends Component {
         </div>
         {
           this.state.dropdownOpened ?
-            <MatchDetails allParticipants={this.props.allParticipants}/> : <div></div>
+            <MatchDetails match={this.props.match} allParticipants={this.props.allParticipants}/> : <div></div>
         }
         <div className="match-dropdown" onClick={() => this.setState({ dropdownOpened: !this.state.dropdownOpened })}>
           {

@@ -3,6 +3,7 @@ import 'fetch-everywhere'
 import './SummonerStats.css'
 import Match from './Match.js'
 import SummonerQueue from './SummonerQueue.js'
+import { shortenSummonerName } from './Helpers'
 
 export default class SummonerStats extends Component {
   constructor(props) {
@@ -35,8 +36,6 @@ export default class SummonerStats extends Component {
     let days = Math.floor(hours / 24);
     return `${days} day${days === 1 ? '' : 's'} ago`
   };
-
-  shortenSummonerName = summonerName => summonerName.replace(' ', '').toLowerCase();
 
   mapParticipants = (participants, participantsIdentities) => {
     let result = [];
@@ -85,7 +84,7 @@ export default class SummonerStats extends Component {
                 return {
                   ...e,
                   searchedSummoner: this.mapParticipants(e.participants, e.participantIdentities)
-                    .filter(x => this.shortenSummonerName(x.summonerName) === this.shortenSummonerName(this.props.match.params.summonerName))[0]
+                    .filter(x => shortenSummonerName(x.summonerName) === shortenSummonerName(this.props.match.params.summonerName))[0]
                 }
               }),
               soloQ: json.queueData.find(x => x.queueType === 'RANKED_SOLO_5x5') || null,

@@ -52,7 +52,7 @@
           align-items: center;
           width: 55%;
           margin-left: 5%; }
-          .match-overview .team-blue .scoreboard-row .scoreboard-champion .scoreboard-summoner p, .match-overview .team-red .scoreboard-row .scoreboard-champion .scoreboard-summoner p {
+          .match-overview .team-blue .scoreboard-row .scoreboard-champion .scoreboard-summoner a, .match-overview .team-red .scoreboard-row .scoreboard-champion .scoreboard-summoner a {
             display: block;
             text-overflow: ellipsis;
             white-space: nowrap;
