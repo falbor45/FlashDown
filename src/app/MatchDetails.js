@@ -4,11 +4,29 @@ import MatchAnalysis from './MatchAnalysis'
 import MatchOverview from './MatchOverview'
 
 export default class MatchDetails extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      displayedComponent: 'matchOverview'
+    }
+  }
   render() {
     return (
       <div className="match-details">
-        <MatchAnalysis allParticipants={this.props.allParticipants}/>
-        <MatchOverview allParticipants={this.props.allParticipants}/>
+        <div className="match-details-selection">
+          <button className={this.state.displayedComponent === 'matchOverview' ? 'active' : ''}
+                  onClick={() => this.setState({ displayedComponent: 'matchOverview'})}>Overview</button>
+          <button className={this.state.displayedComponent === 'matchAnalysis' ? 'active' : ''}
+                  onClick={() => this.setState({ displayedComponent: 'matchAnalysis'})}>Analysis</button>
+        </div>
+        {
+          this.state.displayedComponent === 'matchOverview' ?
+            <MatchOverview allParticipants={this.props.allParticipants}/> :
+            this.state.displayedComponent === 'matchAnalysis' ?
+              <MatchAnalysis allParticipants={this.props.allParticipants}/> :
+              null
+        }
       </div>
     )
   }

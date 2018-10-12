@@ -1,20 +1,24 @@
 .match-details {
   border-top: 1px solid #FFAE00;
   padding: 0.5rem 1rem; }
-
-.champion-select {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 1rem; }
-  .champion-select > div {
-    width: 60px;
-    height: 60px; }
-    .champion-select > div img {
-      width: 100%;
-      height: auto;
-      opacity: 0.5;
+  .match-details .match-details-selection {
+    display: flex;
+    justify-content: space-around;
+    margin: 1rem 0; }
+    .match-details .match-details-selection button {
+      border: 1px solid #FFAE00;
+      padding: 0.5rem 1rem;
+      background: #000000;
+      color: #FFFFFF;
+      font-weight: bold;
+      border-radius: 5px;
+      outline: none;
       transition: 0.5s; }
-    .champion-select > div img.selected {
-      opacity: 1; }
+      .match-details .match-details-selection button:hover {
+        background: #FFAE00;
+        color: #000000; }
+    .match-details .match-details-selection button.active {
+      background: #FFAE00;
+      color: #000000; }
 
 /*# sourceMappingURL=MatchDetails.css.map */
