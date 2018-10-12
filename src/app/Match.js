@@ -3,7 +3,6 @@ import './Match.css'
 import MediaQuery from 'react-responsive'
 import { determineQueueType } from './Helpers.js';
 import MatchDetails from './MatchDetails'
-import { shortenSummonerName } from './Helpers'
 
 
 export default class Match extends Component {
@@ -106,7 +105,7 @@ export default class Match extends Component {
                     <div>
                       <img src={e.champion.iconURL}/>
                       <div>
-                        <a href={`http://${window.location.host}/summoner/${this.props.match.params.leagueServer}/${shortenSummonerName(e.summonerName)}`}>{e.summonerName}</a>
+                        <a href={`http://${window.location.host}/summoner/${this.props.match.params.leagueServer}/${e.summonerName.toLowerCase()}`}>{e.summonerName}</a>
                       </div>
                     </div>
                   )
@@ -120,7 +119,7 @@ export default class Match extends Component {
                       <div>
                         <img src={e.champion.iconURL}/>
                         <div>
-                          <a href={`http://${window.location.host}/summoner/${this.props.match.params.leagueServer}/${shortenSummonerName(e.summonerName)}`}>{e.summonerName}</a>
+                          <a href={`http://${window.location.host}/summoner/${this.props.match.params.leagueServer}/${e.summonerName.toLowerCase()}`}>{e.summonerName}</a>
                         </div>
                       </div>
                     )

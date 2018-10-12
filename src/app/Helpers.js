@@ -127,5 +127,3 @@ export const removeArrayElement = (array, element) => {
   }
   return array;
 };
-
-export const shortenSummonerName = summonerName => summonerName.replace(' ', '').toLowerCase();
