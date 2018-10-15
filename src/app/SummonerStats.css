@@ -74,10 +74,14 @@
   font-weight: bold;
   font-family: inherit; }
 
+.summoner-main-view {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 2rem; }
+
 .recent-matches {
   width: 90%;
-  margin: 0 auto;
-  margin-top: 2rem; }
+  margin: 0 auto; }
   @media screen and (min-width: 1200px) {
     .recent-matches {
       width: 70%; } }

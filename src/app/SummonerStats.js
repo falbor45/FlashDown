@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
 import 'fetch-everywhere'
+import MediaQuery from 'react-responsive'
 import './SummonerStats.css'
 import Match from './Match.js'
+import SummonerOverview from './SummonerOverview'
 import SummonerQueue from './SummonerQueue.js'
 
 export default class SummonerStats extends Component {
@@ -117,23 +119,28 @@ export default class SummonerStats extends Component {
                 soloQ={this.state.data.soloQ}
                 flexQ={this.state.data.flexQ}
                 flex3={this.state.data.flex3}/>
-              <div className="recent-matches">
-                {
-                  this.state.data.recentMatches
-                    .sort((a, b) => b.gameCreation - a.gameCreation)
-                    .map(e => e.hasOwnProperty('gameId') ?
-                      <Match
-                        gameDuration={e.gameDuration}
-                        timeAgo={this.calculateLastSeen(e.gameCreation)}
-                        queueId={e.queueId}
-                        mainSummoner={e.searchedSummoner}
-                        allParticipants={
-                          this.mapParticipants(e.participants, e.participantIdentities)
-                        }
-                        match={this.props.match}/>
-                      : <div></div>
-                    )
-                }
+              <div className="summoner-main-view">
+                <MediaQuery query="(min-width: 1200px)">
+                  <SummonerOverview recentMatches={this.state.data.recentMatches}/>
+                </MediaQuery>
+                <div className="recent-matches">
+                  {
+                    this.state.data.recentMatches
+                      .sort((a, b) => b.gameCreation - a.gameCreation)
+                      .map(e => e.hasOwnProperty('gameId') ?
+                        <Match
+                          gameDuration={e.gameDuration}
+                          timeAgo={this.calculateLastSeen(e.gameCreation)}
+                          queueId={e.queueId}
+                          mainSummoner={e.searchedSummoner}
+                          allParticipants={
+                            this.mapParticipants(e.participants, e.participantIdentities)
+                          }
+                          match={this.props.match}/>
+                        : <div></div>
+                      )
+                  }
+                </div>
               </div>
             </div> :
             <div></div>
