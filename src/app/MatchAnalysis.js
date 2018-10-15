@@ -36,7 +36,7 @@ export default class MatchAnalysis extends Component {
           {
             this.props.allParticipants.map(e =>
               <div onClick={() => this.toggleChampionSelect(e.participantId)}>
-                <img className={`${this.state.selectedChampions.includes(e.participantId) ? 'selected' : ''}`}
+                <img className={`${e.teamId === 100 ? 'team-blue' : 'team-red'} ${this.state.selectedChampions.includes(e.participantId) ? 'selected' : ''}`}
                      src={e.champion.iconURL}/>
               </div>
             )

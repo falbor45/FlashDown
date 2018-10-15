@@ -15,6 +15,10 @@
       height: auto;
       opacity: 0.5;
       transition: 0.5s; }
+    .champion-select > div img.team-blue {
+      border: 1px solid #0381FF; }
+    .champion-select > div img.team-red {
+      border: 1px solid #FF6F00; }
     .champion-select > div img.selected {
       opacity: 1; }
 
