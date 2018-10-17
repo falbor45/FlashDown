@@ -254,9 +254,6 @@ api.get('/summoner/:leagueServer/:summonerName', (req, res) => {
   fetch(encodeURI(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${summonerName}?api_key=${API_KEY}`))
     .then(response => response.json())
     .then(json => {
-      console.log('test')
-      console.log(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${summonerName}?api_key=${API_KEY}`)
-      console.log(json)
       summonerData.name = json.name;
       summonerData.summonerLevel = json.summonerLevel;
       summonerData.lastSeen = json.revisionDate;
@@ -276,7 +273,9 @@ api.get('/summoner/:leagueServer/:summonerName', (req, res) => {
               await Promise.all(matchURLs.map(async (matchURL) => {
                 return fetch(matchURL)
                   .then(matchData => matchData.json())
-                  .then(json => matches.push(mapMatch(json)))
+                  .then(json => {
+                    return json.gameId ? matches.push(mapMatch(json)) : null;
+                  })
                   .catch(err => console.log(err));
               }));
 
