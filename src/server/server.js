@@ -63,7 +63,6 @@ fetch('https://ddragon.leagueoflegends.com/api/versions.json')
 
 // data argument is the data key coming from http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/summoner.json
 let mapSummonerSpellId = (data, spellId, gameWatcher, cosmicInsight) => {
-  let cooldownMultiplier = cosmicInsight ? 0.95 : 1;
   for (let prop in data) {
     if (data.hasOwnProperty(prop)) {
       if (parseInt(data[prop].key) === spellId) {
