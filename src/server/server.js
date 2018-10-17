@@ -195,6 +195,20 @@ let updateLucidity = (data, summonerName) => {
   return newData;
 };
 
+let handleResponse = (res, response) => {
+  if (response.status === 200) {
+    return response;
+  }
+  res.send({
+    status: response.status,
+    statusText: response.statusText
+  });
+  throw new Error({
+    status: response.status,
+    statusText: response.statusText
+  });
+};
+
 app.get('*', async (req, res) => {
   const initialState = { };
   const context = {};
@@ -242,6 +256,7 @@ api.get('/summoner/:leagueServer/:summonerName', (req, res) => {
   }
 
   fetch(encodeURI(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${summonerName}?api_key=${API_KEY}`))
+    .then(response => handleResponse(res, response))
     .then(response => response.json())
     .then(json => {
       summonerData.name = json.name;
@@ -250,11 +265,13 @@ api.get('/summoner/:leagueServer/:summonerName', (req, res) => {
       summonerData.profileIconURL = `http://ddragon.leagueoflegends.com/cdn/${latestVersion}/img/profileicon/${json.profileIconId}.png`;
 
       fetch(encodeURI(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/league/v3/positions/by-summoner/${json.id}?api_key=${API_KEY}`))
+        .then(response => handleResponse(res, response))
         .then(response => response.json())
         .then(json2 => {
           summonerData.queueData = json2;
 
           fetch(encodeURI(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/match/v3/matchlists/by-account/${json.accountId}?endIndex=20&api_key=${API_KEY}`))
+            .then(response => handleResponse(res, response))
             .then(response => response.json())
             .then(async json3 => {
               let matches = [];
@@ -297,18 +314,15 @@ api.get('/create-game-room/:leagueServer/:summonerName', (req, res) => {
     "br": "br1"
   };
   fetch(encodeURI(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${summonerName}?api_key=${API_KEY}`))
+    .then(response => handleResponse(res, response))
     .then(response => response.json())
     .then(response => {
       summonerId = response.id;
       let gameData;
       let roomCode;
       fetch(encodeURI(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/spectator/v3/active-games/by-summoner/${summonerId}?api_key=${API_KEY}`))
-        .then(response => {
-          if (response.status === 200) {
-            return response.json();
-          }
-          res.status(404).send({error_code: 404, message: "Player is currently not in game"})
-        })
+        .then(response => handleResponse(res, response))
+        .then(response => response.json())
         .then(json => {
           gameData = {
             mapId: json.mapId,
