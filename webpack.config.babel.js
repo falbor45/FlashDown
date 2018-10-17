@@ -107,4 +107,31 @@ const serverConfig = {
   }
 }
 
-export default [clientConfig, serverConfig];
+const apiConfig = {
+  ...common,
+
+  name: 'api',
+  target: 'node',
+  externals: [nodeExternals()],
+
+  entry: {
+    server: ['babel-polyfill', path.resolve(__dirname, 'src/server', 'api.js')]
+  },
+  output: {
+    path: path.resolve(__dirname, 'build'),
+    filename: 'api.js'
+  },
+
+  devtool: 'cheap-module-source-map',
+
+  node: {
+    console: false,
+    global: false,
+    process: false,
+    Buffer: false,
+    __filename: false,
+    __dirname: false,
+  }
+}
+
+export default [clientConfig, serverConfig, apiConfig];
