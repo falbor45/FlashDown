@@ -61,15 +61,6 @@ fetch('https://ddragon.leagueoflegends.com/api/versions.json')
   })
   .catch(err => console.log(err));
 
-// encoding function below serves only as an example
-let encode = string => {
-  let newString = "";
-  for (let i = 0; i < string.length; i++) {
-    newString += string[i].charCodeAt();
-  }
-  return newString;
-};
-
 // data argument is the data key coming from http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/summoner.json
 let mapSummonerSpellId = (data, spellId, gameWatcher, cosmicInsight) => {
   let cooldownMultiplier = cosmicInsight ? 0.95 : 1;
