@@ -85,7 +85,7 @@ export default class SummonerStats extends Component {
                 return {
                   ...e,
                   searchedSummoner: this.mapParticipants(e.participants, e.participantIdentities)
-                    .filter(x => x.summonerName.toLowerCase() === this.props.match.params.summonerName.toLowerCase())[0]
+                    .filter(x => x.summonerName.toLowerCase().replace(' ', '') === this.props.match.params.summonerName.toLowerCase().replace(' ', ''))[0]
                 }
               }),
               soloQ: json.queueData.find(x => x.queueType === 'RANKED_SOLO_5x5') || null,
