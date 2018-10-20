@@ -77,7 +77,6 @@ export default class SummonerStats extends Component {
       fetch(`http://${window.location.host}:3000/summoner/${this.props.match.params.leagueServer}/${this.props.match.params.summonerName}`)
         .then(response => response.json())
         .then(json => {
-          console.log(json)
           this.setState({
             data: {
               ...json,
@@ -95,7 +94,6 @@ export default class SummonerStats extends Component {
             fetched: true
           })
         })
-        .then(() => console.log(this.state))
     }
     return (
       <div>
