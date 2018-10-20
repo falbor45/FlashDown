@@ -48,6 +48,9 @@ export default class LiveGame extends Component {
 
   componentDidMount() {
     this.fetchRoom();
+    setInterval(() => {
+      this.fetchRoom();
+    }, 2000);
   }
 
   render() {
