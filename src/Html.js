@@ -4,7 +4,7 @@ const Html = (props) => {
   return (
     <html>
     <head>
-      <title>App</title>
+      <title>Flash Down</title>
       <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet"/>
       <link rel="stylesheet" type="text/css" href="/styles.css"/>
     </head>
