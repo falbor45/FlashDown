@@ -75,13 +75,13 @@ export default class LiveGame extends Component {
                           <img src={e.championId.iconURL}/>
                         </div>
                         <div className="live-game-spells">
-                          <div>
-                            <img className={this.state.currentTime < e.spell1.available ? 'on-cooldown' : null} onClick={() => this.flashDown('updateSummonerSpell', e.summonerName, '1')} src={e.spell1.image}/>
-                            <span>{e.spell1.available - this.state.currentTime > 0 ? Math.floor((e.spell1.available - this.state.currentTime) / 1000) : null}</span>
+                          <div onClick={() => this.flashDown('updateSummonerSpell', e.summonerName, '1')}>
+                            <img className={this.state.currentTime < e.spell1.available ? 'on-cooldown' : null} src={e.spell1.image}/>
+                            <span onClick={() => this.flashDown('updateSummonerSpell', e.summonerName, '1')}>{e.spell1.available - this.state.currentTime > 0 ? Math.floor((e.spell1.available - this.state.currentTime) / 1000) : null}</span>
                           </div>
-                          <div>
-                            <img className={this.state.currentTime < e.spell2.available ? 'on-cooldown' : null} onClick={() => this.flashDown('updateSummonerSpell', e.summonerName, '2')} src={e.spell2.image}/>
-                            <span>{e.spell2.available - this.state.currentTime > 0 ? Math.floor((e.spell2.available - this.state.currentTime) / 1000) : null}</span>
+                          <div onClick={() => this.flashDown('updateSummonerSpell', e.summonerName, '2')}>
+                            <img className={this.state.currentTime < e.spell2.available ? 'on-cooldown' : null} src={e.spell2.image}/>
+                            <span onClick={() => this.flashDown('updateSummonerSpell', e.summonerName, '2')}>{e.spell2.available - this.state.currentTime > 0 ? Math.floor((e.spell2.available - this.state.currentTime) / 1000) : null}</span>
                           </div>
                         </div>
                       </div>
@@ -95,13 +95,13 @@ export default class LiveGame extends Component {
                     .map(e => (
                       <div>
                         <div className="live-game-spells">
-                          <div>
-                            <img className={this.state.currentTime < e.spell1.available ? 'on-cooldown' : null} onClick={() => this.flashDown('updateSummonerSpell', e.summonerName, '1')} src={e.spell1.image}/>
-                            <span>{e.spell1.available - this.state.currentTime > 0 ? Math.floor((e.spell1.available - this.state.currentTime) / 1000) : null}</span>
+                          <div onClick={() => this.flashDown('updateSummonerSpell', e.summonerName, '1')}>
+                            <img className={this.state.currentTime < e.spell1.available ? 'on-cooldown' : null} src={e.spell1.image}/>
+                            <span onClick={() => this.flashDown('updateSummonerSpell', e.summonerName, '1')}>{e.spell1.available - this.state.currentTime > 0 ? Math.floor((e.spell1.available - this.state.currentTime) / 1000) : null}</span>
                           </div>
-                          <div>
-                            <img className={this.state.currentTime < e.spell2.available ? 'on-cooldown' : null} onClick={() => this.flashDown('updateSummonerSpell', e.summonerName, '2')} src={e.spell2.image}/>
-                            <span>{e.spell2.available - this.state.currentTime > 0 ? Math.floor((e.spell2.available - this.state.currentTime) / 1000) : null}</span>
+                          <div onClick={() => this.flashDown('updateSummonerSpell', e.summonerName, '2')}>
+                            <img className={this.state.currentTime < e.spell2.available ? 'on-cooldown' : null} src={e.spell2.image}/>
+                            <span onClick={() => this.flashDown('updateSummonerSpell', e.summonerName, '2')}>{e.spell2.available - this.state.currentTime > 0 ? Math.floor((e.spell2.available - this.state.currentTime) / 1000) : null}</span>
                           </div>
                         </div>
                         <div className="live-game-champion">
