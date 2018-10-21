@@ -9,7 +9,7 @@
 
 .region-select {
   border: 1px solid #AAAAAA;
-  border-radius: 8px;
+  border-radius: 5px;
   background: #FFFFFF;
   width: 60%;
   margin: 0 auto;
@@ -24,7 +24,7 @@
 .regions {
   background: #EEEEEE;
   padding-bottom: 1rem;
-  border-radius: 0 0 8px 8px; }
+  border-radius: 0 0 5px 5px; }
 
 .region-item {
   display: inline-block;

@@ -20,7 +20,7 @@
   text-align: center;
   border-right: none;
   padding: 0 25% 0 5%;
-  border-radius: 4px;
+  border-radius: 5px;
   font-size: 1.2rem; }
 
 .find-region {
@@ -45,6 +45,6 @@
   background: #FFAE00;
   font-weight: bold;
   border: none;
-  border-radius: 0 4px 4px 0; }
+  border-radius: 0 5px 5px 0; }
 
 /*# sourceMappingURL=Home.css.map */
