@@ -83,7 +83,8 @@
         right: 0;
         top: 50%;
         transform: translate(0, -50%);
-        font-weight: bold; }
+        font-weight: bold;
+        user-select: none; }
     @media screen and (min-width: 1200px) {
       .live-game-participants .live-game-spells {
         flex-direction: column; } }
