@@ -1,6 +1,7 @@
 .match-details {
   border-top: 1px solid #FFAE00;
-  padding: 0.5rem 1rem; }
+  padding: 0.5rem 1rem;
+  position: relative; }
   .match-details .match-details-selection {
     display: flex;
     justify-content: space-around;
@@ -20,5 +21,23 @@
     .match-details .match-details-selection button.active {
       background: #FFAE00;
       color: #000000; }
+  .match-details .match-details-selection-fade-enter {
+    opacity: 0.01;
+    max-height: 1px;
+    overflow: hidden; }
+  .match-details .match-details-selection-fade-enter-active {
+    opacity: 1;
+    max-height: 1000px;
+    transition: 0.25s;
+    overflow: hidden; }
+  .match-details .match-details-selection-fade-exit {
+    opacity: 1;
+    max-height: 1000px;
+    overflow: hidden; }
+  .match-details .match-details-selection-fade-exit-active {
+    opacity: 0.01;
+    max-height: 1px;
+    overflow: hidden;
+    transition: 0.25s; }
 
 /*# sourceMappingURL=MatchDetails.css.map */

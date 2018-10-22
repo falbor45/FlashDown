@@ -189,5 +189,23 @@
       border-right: 8px solid transparent;
       border-bottom: 8px solid #000000;
       border-left: 8px solid transparent; }
+  .match .match-details-fade-enter {
+    opacity: 0.01;
+    max-height: 1px;
+    overflow: hidden; }
+  .match .match-details-fade-enter-active {
+    opacity: 1;
+    max-height: 1000px;
+    transition: 0.5s;
+    overflow: hidden; }
+  .match .match-details-fade-exit {
+    opacity: 1;
+    max-height: 1000px;
+    overflow: hidden; }
+  .match .match-details-fade-exit-active {
+    opacity: 0.01;
+    max-height: 1px;
+    overflow: hidden;
+    transition: 0.5s; }
 
 /*# sourceMappingURL=Match.css.map */

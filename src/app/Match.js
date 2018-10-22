@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import './Match.css'
 import MediaQuery from 'react-responsive'
 import { determineQueueType } from './Helpers.js';
+import { CSSTransition } from 'react-transition-group';
 import MatchDetails from './MatchDetails'
 
 
@@ -128,10 +129,9 @@ export default class Match extends Component {
             </div>
           </MediaQuery>
         </div>
-        {
-          this.state.dropdownOpened ?
-            <MatchDetails match={this.props.match} allParticipants={this.props.allParticipants}/> : <div></div>
-        }
+        <CSSTransition in={this.state.dropdownOpened} timeout={500} classNames="match-details-fade" unmountOnExit>
+          <MatchDetails match={this.props.match} allParticipants={this.props.allParticipants}/>
+        </CSSTransition>
         <div className="match-dropdown" onClick={() => this.setState({ dropdownOpened: !this.state.dropdownOpened })}>
           {
             this.state.dropdownOpened ?
