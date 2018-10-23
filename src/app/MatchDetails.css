@@ -28,7 +28,7 @@
   .match-details .match-details-selection-fade-enter-active {
     opacity: 1;
     max-height: 1000px;
-    transition: 0.25s;
+    transition: 0.7s;
     overflow: hidden; }
   .match-details .match-details-selection-fade-exit {
     opacity: 1;
@@ -38,6 +38,6 @@
     opacity: 0.01;
     max-height: 1px;
     overflow: hidden;
-    transition: 0.25s; }
+    transition: 0.7s; }
 
 /*# sourceMappingURL=MatchDetails.css.map */
