@@ -13,7 +13,7 @@ api.use(bodyParser.json());
 
 api.use(cors());
 
-let rooms = new RoomManager();
+let roomManager = new RoomManager();
 
 let summonerSpells;
 let champions;
@@ -296,6 +296,7 @@ api.get('/create-game-room/:leagueServer/:summonerName', (req, res) => {
         .then(response => handleResponse(res, response))
         .then(response => response.json())
         .then(json => {
+          let gameURL = `https://${regionMap[leagueServer]}.api.riotgames.com/lol/spectator/v3/active-games/by-summoner/${summonerId}?api_key=${API_KEY}`;
           gameData = {
             mapId: json.mapId,
             gameType: json.gameType,
@@ -315,7 +316,7 @@ api.get('/create-game-room/:leagueServer/:summonerName', (req, res) => {
             bannedChampions: json.bannedChampions,
             gameStartTime: json.gameStartTime
           };
-          roomCode = rooms.createRoom(gameData);
+          roomCode = roomManager.createRoom(gameData, gameURL);
           res.status(200).send({roomCode: roomCode});
         })
         .catch(error => console.log(error));
@@ -325,16 +326,16 @@ api.get('/create-game-room/:leagueServer/:summonerName', (req, res) => {
 
 api.route('/gamerooms/:roomCode')
   .get((req, res) => {
-    res.send(rooms.getRoom(req.params.roomCode));
+    res.send(roomManager.getRoom(req.params.roomCode));
   })
   .post((req, res) => {
     if (req.body.action === 'updateSummonerSpell') {
-      rooms.rooms[req.body.roomCode] = updateSummonerSpellCD(rooms.rooms[req.body.roomCode], req.body.summonerName, req.body.spell);
+      roomManager.updateRoom(updateSummonerSpellCD(roomManager.rooms[req.body.roomCode], req.body.summonerName, req.body.spell), req.body.roomCode);
       res.send(`${req.body.summonerName}'s spell has been updated!`);
       return null;
     }
     if (req.body.action === 'updateLucidity') {
-      rooms.rooms[req.body.roomCode] = updateLucidity(rooms.rooms[req.body.roomCode], req.body.summonerName);
+      roomManager.updateRoom(updateLucidity(roomManager.rooms[req.body.roomCode], req.body.summonerName), req.body.roomCode);
       res.send(`${req.body.summonerName}'s lucidity boots have been updated!`);
       return null;
     }

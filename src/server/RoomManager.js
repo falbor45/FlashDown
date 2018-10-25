@@ -21,7 +21,13 @@ export default class RoomManager {
       return null;
     }
 
-    this.rooms[roomCode] = data;
+    this.rooms[roomCode] = {
+      ...data,
+      lastUpdate: new Date().getTime(),
+      inactive: false
+    };
+
+    this.attachActivityListener(roomCode);
 
     return roomCode;
   };
@@ -34,5 +40,36 @@ export default class RoomManager {
     }
 
     return roomCode;
+  }
+
+  updateRoom(data, roomCode) {
+    if (!this.rooms[roomCode].inactive) {
+      this.rooms[roomCode] = {
+        ...data,
+        lastUpdate: new Date().getTime()
+      };
+      return true;
+    }
+    return false;
+  }
+
+  attachActivityListener(roomCode) {
+    let temp = setInterval(() => {
+      if (this.shouldCloseRoom(roomCode)) {
+        this.closeRoom(roomCode);
+        clearInterval(temp);
+      }
+    }, 120000)
+  }
+
+  shouldCloseRoom(roomCode) {
+    return new Date().getTime() - this.rooms[roomCode].lastUpdate > 900000
+  }
+
+  closeRoom(roomCode) {
+    this.rooms[roomCode] = {
+      ...this.rooms[roomCode],
+      inactive: true
+    }
   }
 }
