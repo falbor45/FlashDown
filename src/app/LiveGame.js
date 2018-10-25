@@ -11,7 +11,7 @@ export default class LiveGame extends Component {
       data: null,
       currentTime: setInterval(() => this.setState({
         currentTime: new Date().getTime()
-      }))
+      }), 1000)
     };
   }
 
