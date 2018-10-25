@@ -60,6 +60,11 @@ export default class LiveGame extends Component {
           <div className="live-game-header">
             <p>{determineQueueType(this.state.data.gameQueueConfigId)}</p>
             <p>Room: {this.props.match.params.roomCode}</p>
+            {
+              this.state.data.inactive ? (
+                <p className="live-game-inactivity-notice">This room has been closed due to inactivity.</p>
+              ) : null
+            }
             <div className="live-game-participants">
               <div className="team-blue">
                 {

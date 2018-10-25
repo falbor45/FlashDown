@@ -16,6 +16,8 @@
   .live-game-header > p:first-child {
     font-size: 2rem;
     color: #FFAE00; }
+  .live-game-header .live-game-inactivity-notice {
+    color: #ae0000; }
 
 .live-game-participants {
   display: flex; }
