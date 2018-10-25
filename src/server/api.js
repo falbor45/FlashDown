@@ -329,13 +329,17 @@ api.route('/gamerooms/:roomCode')
     res.send(roomManager.getRoom(req.params.roomCode));
   })
   .post((req, res) => {
+    // because of the reference nature of objects,
+    // passing deep cloned object into update functions
+    // is needed, otherwise inactivity check in roomManager.updateRoom function
+    // would serve no purpose
     if (req.body.action === 'updateSummonerSpell') {
-      roomManager.updateRoom(updateSummonerSpellCD(roomManager.rooms[req.body.roomCode], req.body.summonerName, req.body.spell), req.body.roomCode);
+      roomManager.updateRoom(updateSummonerSpellCD(JSON.parse(JSON.stringify(roomManager.getRoom(req.body.roomCode))), req.body.summonerName, req.body.spell), req.body.roomCode);
       res.send(`${req.body.summonerName}'s spell has been updated!`);
       return null;
     }
     if (req.body.action === 'updateLucidity') {
-      roomManager.updateRoom(updateLucidity(roomManager.rooms[req.body.roomCode], req.body.summonerName), req.body.roomCode);
+      roomManager.updateRoom(updateLucidity(JSON.parse(JSON.stringify(roomManager.getRoom(req.body.roomCode))), req.body.summonerName), req.body.roomCode);
       res.send(`${req.body.summonerName}'s lucidity boots have been updated!`);
       return null;
     }
