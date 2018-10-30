@@ -11,9 +11,10 @@ export default class SummonerStats extends Component {
     super(props);
 
     this.state = {
-      data: null,
+      summonerData: null,
       fetched: false,
-      roomCode: null
+      roomCode: null,
+      recentMatches: null
     }
   }
 
@@ -54,6 +55,35 @@ export default class SummonerStats extends Component {
     return result;
   };
 
+  fetchSummonerData = (server, summonerName) => fetch(`http://${window.location.host}:3000/summoner/${server}/${summonerName}`)
+    .then(response => response.json())
+    .then(json => {
+      console.log(json)
+        this.setState({
+          summonerData: {
+            ...json,
+            soloQ: json.queueData.find(x => x.queueType === 'RANKED_SOLO_5x5') || null,
+            flexQ: json.queueData.find(x => x.queueType === 'RANKED_FLEX_SR') || null,
+            flex3: json.queueData.find(x => x.queueType === 'RANKED_FLEX_TT') || null,
+          }
+        })
+      })
+    .catch(err => console.log(err));
+
+  fetchRecentMatches = (server, summonerName) => fetch(`http://${window.location.host}:3000/matchList/${server}/${summonerName}`)
+    .then(response => response.json())
+    .then(json => {
+      this.setState({
+        recentMatches: json.map(e => {
+          return {
+            ...e,
+            searchedSummoner: this.mapParticipants(e.participants, e.participantIdentities)
+              .filter(x => x.summonerName.toLowerCase().replace(' ', '') === this.props.match.params.summonerName.toLowerCase().replace(' ', ''))[0]
+          }
+        })
+      })
+    })
+
   showLiveGame = () => {
     if (this.state.roomCode !== null) {
       window.open(`http://${window.location.host}/gamerooms/${this.state.roomCode}`, '_blank')
@@ -74,72 +104,60 @@ export default class SummonerStats extends Component {
 
   render() {
     if (typeof window !== 'undefined' && !this.state.fetched) {
-      fetch(`http://${window.location.host}:3000/summoner/${this.props.match.params.leagueServer}/${this.props.match.params.summonerName}`)
-        .then(response => response.json())
-        .then(json => {
-          this.setState({
-            data: {
-              ...json,
-              recentMatches: json.recentMatches.map(e => {
-                return {
-                  ...e,
-                  searchedSummoner: this.mapParticipants(e.participants, e.participantIdentities)
-                    .filter(x => x.summonerName.toLowerCase().replace(' ', '') === this.props.match.params.summonerName.toLowerCase().replace(' ', ''))[0]
-                }
-              }),
-              soloQ: json.queueData.find(x => x.queueType === 'RANKED_SOLO_5x5') || null,
-              flexQ: json.queueData.find(x => x.queueType === 'RANKED_FLEX_SR') || null,
-              flex3: json.queueData.find(x => x.queueType === 'RANKED_FLEX_TT') || null,
-            },
-            fetched: true
-          })
-        })
+      this.fetchSummonerData(this.props.match.params.leagueServer, this.props.match.params.summonerName);
+      this.fetchRecentMatches(this.props.match.params.leagueServer, this.props.match.params.summonerName);
+      this.setState({
+        fetched: true
+      })
     }
     return (
       <div>
         {
-          this.state.fetched ?
+          this.state.summonerData !== null ?
             <div className="summoner-view">
               <div className="summoner-header">
                 <div className="summoner-icon">
-                  <img src={this.state.data.profileIconURL} alt="summonerIcon"/>
-                  <span>{this.state.data.summonerLevel}</span>
+                  <img src={this.state.summonerData.profileIconURL} alt="summonerIcon"/>
+                  <span>{this.state.summonerData.summonerLevel}</span>
                 </div>
                 <div className="summoner-misc-info">
-                  <p className="summoner-name">{this.state.data.name}</p>
-                  <p className="summoner-last-seen">Last seen: {this.calculateLastSeen(this.state.data.lastSeen)}</p>
+                  <p className="summoner-name">{this.state.summonerData.name}</p>
+                  <p className="summoner-last-seen">Last seen: {this.calculateLastSeen(this.state.summonerData.lastSeen)}</p>
                   <button onClick={() => this.showLiveGame()}
                           className="summoner-live-game"
                           type="button">Live game</button>
                 </div>
               </div>
               <SummonerQueue
-                soloQ={this.state.data.soloQ}
-                flexQ={this.state.data.flexQ}
-                flex3={this.state.data.flex3}/>
-              <div className="summoner-main-view">
-                <MediaQuery query="(min-width: 1200px)">
-                  <SummonerOverview recentMatches={this.state.data.recentMatches}/>
-                </MediaQuery>
-                <div className="recent-matches">
-                  {
-                    this.state.data.recentMatches
-                      .sort((a, b) => b.gameCreation - a.gameCreation)
-                      .map(e => e.hasOwnProperty('gameId') ?
-                        <Match
-                          gameDuration={e.gameDuration}
-                          timeAgo={this.calculateLastSeen(e.gameCreation)}
-                          queueId={e.queueId}
-                          mainSummoner={e.searchedSummoner}
-                          allParticipants={
-                            this.mapParticipants(e.participants, e.participantIdentities)
-                          }
-                          match={this.props.match}/>
-                        : <div></div>
-                      )
-                  }
-                </div>
-              </div>
+                soloQ={this.state.summonerData.soloQ}
+                flexQ={this.state.summonerData.flexQ}
+                flex3={this.state.summonerData.flex3}/>
+              {
+                this.state.recentMatches !== null ?
+                  <div className="summoner-main-view">
+                    <MediaQuery query="(min-width: 1200px)">
+                      <SummonerOverview recentMatches={this.state.recentMatches}/>
+                    </MediaQuery>
+                    <div className="recent-matches">
+                      {
+                        this.state.recentMatches
+                          .sort((a, b) => b.gameCreation - a.gameCreation)
+                          .map(e => e.hasOwnProperty('gameId') ?
+                            <Match
+                              gameDuration={e.gameDuration}
+                              timeAgo={this.calculateLastSeen(e.gameCreation)}
+                              queueId={e.queueId}
+                              mainSummoner={e.searchedSummoner}
+                              allParticipants={
+                                this.mapParticipants(e.participants, e.participantIdentities)
+                              }
+                              match={this.props.match}/>
+                            : <div></div>
+                          )
+                      }
+                    </div>
+                  </div> : <div></div>
+              }
             </div> :
             <div></div>
         }
