@@ -20,6 +20,19 @@ let champions;
 let latestVersion;
 let runesReforged;
 
+let regionMap = {
+  "eune": "eun1",
+  "euw": "euw1",
+  "jp": "jp1",
+  "las": "la2",
+  "lan": "la1",
+  "na": "na1",
+  "oce": "oc1",
+  "ru": "ru",
+  "tr": "tr1",
+  "br": "br1"
+};
+
 fetch('https://ddragon.leagueoflegends.com/api/versions.json')
   .then(response => response.json())
   .then(json => {
@@ -198,23 +211,50 @@ let handleResponse = (res, response) => {
   });
 };
 
+api.get('/matchList/:leagueServer/:summonerName', (req, res) => {
+  let leagueServer = req.params.leagueServer;
+  let summonerName = req.params.summonerName;
+  let matches = [];
+
+  if (regionMap[leagueServer] === undefined) {
+    res.json({
+      status: {
+        status_code: 404,
+        message: "Region not found"
+      }
+    });
+    return null;
+  }
+
+  fetch(encodeURI(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${summonerName}?api_key=${API_KEY}`))
+    .then(response => handleResponse(res, response))
+    .then(response => response.json())
+    .then(json => {
+      fetch(encodeURI(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/match/v3/matchlists/by-account/${json.accountId}?endIndex=20&api_key=${API_KEY}`))
+        .then(response => handleResponse(res, response))
+        .then(response => response.json())
+        .then(async json2 => {
+          let matchURLs = await json2.matches.map(e => `https://${regionMap[leagueServer]}.api.riotgames.com/lol/match/v3/matches/${e.gameId}?api_key=${API_KEY}`);
+
+          await Promise.all(matchURLs.map(async (matchURL) => {
+            return fetch(matchURL)
+              .then(matchData => matchData.json())
+              .then(json => {
+                return json.gameId ? matches.push(mapMatch(json)) : null;
+              })
+              .catch(err => console.log(err));
+          }));
+        })
+        .then(() => res.send(matches))
+        .catch(err => console.log(err));
+    })
+    .catch(err => console.log(err));
+});
+
 api.get('/summoner/:leagueServer/:summonerName', (req, res) => {
   let leagueServer = req.params.leagueServer;
   let summonerName = req.params.summonerName;
   let summonerData = {};
-
-  let regionMap = {
-    "eune": "eun1",
-    "euw": "euw1",
-    "jp": "jp1",
-    "las": "la2",
-    "lan": "la1",
-    "na": "na1",
-    "oce": "oc1",
-    "ru": "ru",
-    "tr": "tr1",
-    "br": "br1"
-  };
 
   if (regionMap[leagueServer] === undefined) {
     res.json({
