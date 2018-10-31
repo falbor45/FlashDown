@@ -211,6 +211,26 @@ let handleResponse = (res, response) => {
   });
 };
 
+api.get('/challengerPlayers/:leagueServer', (req, res) => {
+  let leagueServer = req.params.leagueServer;
+
+  if (regionMap[leagueServer] === undefined) {
+    res.json({
+      status: {
+        status_code: 404,
+        message: "Region not found"
+      }
+    });
+    return null;
+  }
+
+  fetch(encodeURI(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/league/v3/challengerleagues/by-queue/RANKED_SOLO_5x5?api_key=${API_KEY}`))
+    .then(response => handleResponse(res, response))
+    .then(response => response.json())
+    .then(json => res.send(json))
+    .catch(err => console.log(err))
+});
+
 api.get('/matchList/:leagueServer/:summonerName', (req, res) => {
   let leagueServer = req.params.leagueServer;
   let summonerName = req.params.summonerName;
