@@ -43,22 +43,22 @@ export default class SummonerStats extends Component {
     let result = [];
     let participantsCopy = participants.sort(e => e.participantId);
     let participantsIdentitiesCopy = participantsIdentities.sort(e => e.participantId);
-
     for (let i = 0; i < participantsCopy.length; i++) {
       result.push({
         ...participantsCopy[i],
         summonerName: participantsIdentitiesCopy[i].player.summonerName,
         profileIcon: participantsIdentitiesCopy[i].player.profileIcon,
+        accountId: participantsIdentitiesCopy[i].player.accountId,
+        currentAccountId: participantsIdentitiesCopy[i].player.currentAccountId,
       })
     }
 
     return result;
   };
 
-  fetchSummonerData = (server, summonerName) => fetch(`http://${window.location.host}:3000/summoner/${server}/${summonerName}`)
+  fetchSummonerDataAndMatches = (server, summonerName) => fetch(`http://${window.location.host}:3000/summoner/${server}/${summonerName}`)
     .then(response => response.json())
     .then(json => {
-      console.log(json)
         this.setState({
           summonerData: {
             ...json,
@@ -68,6 +68,7 @@ export default class SummonerStats extends Component {
           }
         })
       })
+    .then(() => this.fetchRecentMatches(server, summonerName))
     .catch(err => console.log(err));
 
   fetchRecentMatches = (server, summonerName) => fetch(`http://${window.location.host}:3000/matchList/${server}/${summonerName}`)
@@ -78,11 +79,12 @@ export default class SummonerStats extends Component {
           return {
             ...e,
             searchedSummoner: this.mapParticipants(e.participants, e.participantIdentities)
-              .filter(x => x.summonerName.toLowerCase().replace(' ', '') === this.props.match.params.summonerName.toLowerCase().replace(' ', ''))[0]
+              .filter(x => x.accountId === this.state.summonerData.accountId || x.currentAccountId === this.state.summonerData.accountId)[0]
           }
         })
       })
     })
+    .catch(err => console.log(err))
 
   showLiveGame = () => {
     if (this.state.roomCode !== null) {
@@ -92,7 +94,6 @@ export default class SummonerStats extends Component {
     fetch(`http://${window.location.host}:3000/create-game-room/${this.props.match.params.leagueServer}/${this.props.match.params.summonerName}`)
       .then(response => response.json())
       .then(json => {
-        console.log(json);
         this.setState({
           roomCode: json.roomCode
         })
@@ -104,8 +105,7 @@ export default class SummonerStats extends Component {
 
   render() {
     if (typeof window !== 'undefined' && !this.state.fetched) {
-      this.fetchSummonerData(this.props.match.params.leagueServer, this.props.match.params.summonerName);
-      this.fetchRecentMatches(this.props.match.params.leagueServer, this.props.match.params.summonerName);
+      this.fetchSummonerDataAndMatches(this.props.match.params.leagueServer, this.props.match.params.summonerName);
       this.setState({
         fetched: true
       })
