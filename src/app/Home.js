@@ -57,7 +57,6 @@ export default class Home extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.region !== this.state.region) {
-      console.log(prevState, this.state)
       this.fetchChallengerPlayers(this.state.region)
     }
   }
@@ -84,6 +83,7 @@ export default class Home extends Component {
                 {
                   this.state.challengerPlayers.entries
                     .sort((a, b) => b.leaguePoints - a.leaguePoints)
+                    .slice(0, 10)
                     .map(e => (
                       <div className="challenger-item" >
                         <a href={`http://${window.location.host}/summoner/${this.state.region}/${e.playerOrTeamName.toLowerCase()}`}>{e.playerOrTeamName} ({e.leaguePoints} LP)</a>
