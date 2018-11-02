@@ -12,7 +12,7 @@ export default class SummonerStats extends Component {
 
     this.state = {
       summonerData: null,
-      fetched: false,
+      fetchState: 'not started',
       roomCode: null,
       recentMatches: null,
       inGame: null
@@ -73,6 +73,11 @@ export default class SummonerStats extends Component {
       this.fetchRecentMatches(server, summonerName)
       this.fetchInGameStatus(server, summonerName)
     })
+    .then(() => {
+      this.setState({
+        fetchState: 'done'
+      })
+    })
     .catch(err => console.log(err));
 
   fetchRecentMatches = (server, summonerName) => fetch(`http://${window.location.host}:3000/matchList/${server}/${summonerName}`)
@@ -117,11 +122,11 @@ export default class SummonerStats extends Component {
 
 
   render() {
-    if (typeof window !== 'undefined' && !this.state.fetched) {
-      this.fetchSummonerDataAndMatches(this.props.match.params.leagueServer, this.props.match.params.summonerName);
+    if (typeof window !== 'undefined' && this.state.fetchState === 'not started') {
       this.setState({
-        fetched: true
-      })
+        fetchState: 'fetching'
+      });
+      this.fetchSummonerDataAndMatches(this.props.match.params.leagueServer, this.props.match.params.summonerName);
     }
     return (
       <div>
