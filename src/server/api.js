@@ -295,6 +295,7 @@ api.get('/summoner/:leagueServer/:summonerName', (req, res) => {
       summonerData.summonerLevel = json.summonerLevel;
       summonerData.lastSeen = json.revisionDate;
       summonerData.profileIconURL = `http://ddragon.leagueoflegends.com/cdn/${latestVersion}/img/profileicon/${json.profileIconId}.png`;
+      summonerData.accountId = json.accountId;
 
       fetch(encodeURI(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/league/v3/positions/by-summoner/${json.id}?api_key=${API_KEY}`))
         .then(response => handleResponse(res, response))
