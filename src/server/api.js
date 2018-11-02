@@ -231,6 +231,36 @@ api.get('/challengerPlayers/:leagueServer', (req, res) => {
     .catch(err => console.log(err))
 });
 
+api.get('/isInGame/:leagueServer/:summonerName', (req, res) => {
+  let leagueServer = req.params.leagueServer;
+  let summonerName = req.params.summonerName;
+
+  if (regionMap[leagueServer] === undefined) {
+    res.json({
+      status: {
+        status_code: 404,
+        message: "Region not found"
+      }
+    });
+    return null;
+  }
+
+  fetch(encodeURI(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${summonerName}?api_key=${API_KEY}`))
+    .then(response => handleResponse(res, response))
+    .then(response => response.json())
+    .then(json => {
+      let summonerId = json.id;
+      fetch(encodeURI(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/spectator/v3/active-games/by-summoner/${summonerId}?api_key=${API_KEY}`))
+        .then(response => handleResponse(res, response))
+        .then(response => response.json())
+        .then(json => {
+          res.send(json.hasOwnProperty('gameId'));
+        })
+        .catch(err => console.log(err))
+    })
+    .catch(err => console.log(err))
+});
+
 api.get('/matchList/:leagueServer/:summonerName', (req, res) => {
   let leagueServer = req.params.leagueServer;
   let summonerName = req.params.summonerName;
@@ -346,6 +376,17 @@ api.get('/create-game-room/:leagueServer/:summonerName', (req, res) => {
     "tr": "tr1",
     "br": "br1"
   };
+
+  if (regionMap[leagueServer] === undefined) {
+    res.json({
+      status: {
+        status_code: 404,
+        message: "Region not found"
+      }
+    });
+    return null;
+  }
+
   fetch(encodeURI(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${summonerName}?api_key=${API_KEY}`))
     .then(response => handleResponse(res, response))
     .then(response => response.json())
