@@ -14,7 +14,8 @@ export default class SummonerStats extends Component {
       summonerData: null,
       fetched: false,
       roomCode: null,
-      recentMatches: null
+      recentMatches: null,
+      inGame: null
     }
   }
 
@@ -68,7 +69,10 @@ export default class SummonerStats extends Component {
           }
         })
       })
-    .then(() => this.fetchRecentMatches(server, summonerName))
+    .then(() => {
+      this.fetchRecentMatches(server, summonerName)
+      this.fetchInGameStatus(server, summonerName)
+    })
     .catch(err => console.log(err));
 
   fetchRecentMatches = (server, summonerName) => fetch(`http://${window.location.host}:3000/matchList/${server}/${summonerName}`)
@@ -85,6 +89,15 @@ export default class SummonerStats extends Component {
       })
     })
     .catch(err => console.log(err))
+
+  fetchInGameStatus = (server, summonerName) => fetch(`http://${window.location.host}:3000/isInGame/${server}/${summonerName}`)
+    .then(response => response.json())
+    .then(inGame => {
+      this.setState({
+        inGame: inGame
+      })
+    })
+    .catch(err => console.log(err));
 
   showLiveGame = () => {
     if (this.state.roomCode !== null) {
@@ -123,9 +136,12 @@ export default class SummonerStats extends Component {
                 <div className="summoner-misc-info">
                   <p className="summoner-name">{this.state.summonerData.name}</p>
                   <p className="summoner-last-seen">Last seen: {this.calculateLastSeen(this.state.summonerData.lastSeen)}</p>
-                  <button onClick={() => this.showLiveGame()}
-                          className="summoner-live-game"
-                          type="button">Live game</button>
+                  {
+                    this.state.inGame === true ?
+                      <button onClick={() => this.showLiveGame()}
+                              className="summoner-live-game"
+                              type="button">Live game</button> : null
+                  }
                 </div>
               </div>
               <SummonerQueue
