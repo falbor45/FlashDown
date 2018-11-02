@@ -63,7 +63,8 @@
   flex-wrap: wrap;
   margin: 0 auto;
   background-color: #FFFFFF;
-  border: 1px solid #AAAAAA; }
+  border: 1px solid #AAAAAA;
+  padding-bottom: 1rem; }
   .challengers-list .challengers-title {
     text-align: center;
     font-size: 1.25rem;
