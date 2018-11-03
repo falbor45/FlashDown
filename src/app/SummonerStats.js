@@ -5,6 +5,7 @@ import './SummonerStats.css'
 import Match from './Match.js'
 import SummonerOverview from './SummonerOverview'
 import SummonerQueue from './SummonerQueue.js'
+import { findNextSemicolon } from './Helpers';
 
 export default class SummonerStats extends Component {
   constructor(props) {
@@ -20,14 +21,6 @@ export default class SummonerStats extends Component {
   }
 
   setRecentSearchCookies = (region, summonerName) => {
-    let findNextSemicolon = (string, fromIndex) => {
-      for (let i = fromIndex; i < string.length; i++) {
-        if (string[i] === ";") {
-          return i;
-        }
-      }
-      return string.length;
-    };
     let searchCookieIndex = document.cookie.indexOf(`${region}_search=`) + `${region}_search=`.length;
     let searchCookie = document.cookie.slice(searchCookieIndex, findNextSemicolon(document.cookie, searchCookieIndex));
     let searchCookieNames = searchCookie.split("%").filter(e => e !== "");

@@ -17,14 +17,13 @@
   width: 100%;
   height: 3rem;
   border: 1px solid #AAAAAA;
+  border-bottom: none;
   text-align: center;
   border-right: none;
   padding: 0 25% 0 5%;
-  border-radius: 5px;
-  font-size: 1.2rem; }
-
-.search-input-dropdown {
-  border-radius: 5px 5px 0 0; }
+  border-radius: 5px 5px 0 0;
+  font-size: 1.2rem;
+  outline: none; }
 
 .find-region {
   position: absolute;
@@ -48,7 +47,7 @@
   background: #FFAE00;
   font-weight: bold;
   border: none;
-  border-radius: 0 5px 5px 0; }
+  border-radius: 0 5px 0 0; }
 
 .find-challenger {
   padding: 0.5rem 1rem;
@@ -58,26 +57,37 @@
   border-radius: 5px;
   height: 2rem; }
 
-.challengers-list {
+.search-help {
   display: flex;
   flex-wrap: wrap;
   margin: 0 auto;
   background-color: #FFFFFF;
   border: 1px solid #AAAAAA;
-  padding-bottom: 1rem; }
-  .challengers-list .challengers-title {
+  padding-bottom: 1rem;
+  border-radius: 0 0 5px 5px; }
+  .search-help .search-help-button {
     text-align: center;
-    font-size: 1.25rem;
-    flex: 1 0 100%;
-    padding: 1rem 0; }
-  .challengers-list .challenger-item {
+    font-size: 1.125rem;
+    flex: 1 0 34%;
+    padding: 0.5rem 0;
+    border: none;
+    background: #CCCCCC;
+    outline: none; }
+  .search-help .search-help-button.active {
+    background: #FFFFFF; }
+  .search-help .search-help-item {
     flex: 1 0 34%;
     text-align: center;
     padding: 0.5rem;
     transition: 0.25s;
     color: #AAAAAA; }
-    .challengers-list .challenger-item:hover {
+    .search-help .search-help-item:hover {
       color: #FFAE00; }
+  .search-help .search-help-no-recent-searches {
+    flex: 1 0 51%;
+    text-align: center;
+    padding: 0.5rem;
+    color: #AAAAAA; }
 
 .hidden {
   visibility: hidden; }

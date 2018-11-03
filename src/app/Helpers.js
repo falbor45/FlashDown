@@ -127,3 +127,12 @@ export const removeArrayElement = (array, element) => {
   }
   return array;
 };
+
+export const findNextSemicolon = (string, fromIndex) => {
+  for (let i = fromIndex; i < string.length; i++) {
+    if (string[i] === ";") {
+      return i;
+    }
+  }
+  return string.length;
+};

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Link } from 'react-router-dom'
 import './Home.css'
 import RegionSelect from './RegionSelect'
+import { findNextSemicolon } from './Helpers';
 
 export default class Home extends Component {
   constructor(props) {
@@ -12,7 +13,7 @@ export default class Home extends Component {
       searchValue: '',
       regionSelectVisible: false,
       challengerPlayers: null,
-      showChallengerPlayers: false
+      searchHelpSection: 'topPlayers'
     }
   }
 
@@ -33,12 +34,6 @@ export default class Home extends Component {
     this.props.history.push(`/summoner/${this.state.region}/${this.state.searchValue}`);
   };
 
-  toggleChallengersList = show => {
-      this.setState({
-        showChallengerPlayers: show
-      })
-  };
-
   fetchChallengerPlayers = region => {
     this.setState({
       challengerPlayers: null
@@ -49,6 +44,21 @@ export default class Home extends Component {
         challengerPlayers: json
       }))
       .then(() => console.log(this.state.challengerPlayers))
+  };
+
+  readNamesFromSearchCookie = region => {
+    if (document.cookie === "") {
+      return null;
+    }
+    console.log(region)
+    if (document.cookie.indexOf(`${region}_search=`) === -1) {
+      return null;
+    }
+    let searchCookieIndex = document.cookie.indexOf(`${region}_search=`) + `${region}_search=`.length;
+    console.log(searchCookieIndex)
+    let searchCookie = document.cookie.slice(searchCookieIndex, findNextSemicolon(document.cookie, searchCookieIndex));
+    console.log(searchCookie)
+    return searchCookie.split("%").filter(e => e !== "");
   };
 
   componentDidMount() {
@@ -65,9 +75,8 @@ export default class Home extends Component {
     return (
       <div className="home-wrapper">
         <form className="summoner-search-form"
-              onSubmit={this.handleSubmit}
-              onFocus={() => this.toggleChallengersList(true)}>
-          <input className={`search-input ${this.state.showChallengerPlayers ? 'search-input-dropdown' : ''}`}
+              onSubmit={this.handleSubmit}>
+          <input className="search-input"
                  type="text"
                  placeholder="Search for summoner here..."
                  value={this.state.searchValue}
@@ -76,22 +85,39 @@ export default class Home extends Component {
           <Link to={`/summoner/${this.state.region}/${this.state.searchValue}`}>
             <button className="find-summoner" type="button">GO!</button>
           </Link>
-          {
-            this.state.showChallengerPlayers && this.state.challengerPlayers !== null ?
-              <div className="challengers-list">
-                <p className="challengers-title">Best players of the region</p>
-                {
-                  this.state.challengerPlayers.entries
-                    .sort((a, b) => b.leaguePoints - a.leaguePoints)
-                    .slice(0, 10)
-                    .map(e => (
-                      <div className="challenger-item" >
-                        <a href={`http://${window.location.host}/summoner/${this.state.region}/${e.playerOrTeamName.toLowerCase()}`}>{e.playerOrTeamName} ({e.leaguePoints} LP)</a>
-                      </div>
-                    ))
-                }
-              </div> : null
-          }
+          <div className="search-help">
+          <button className={`search-help-button ${this.state.searchHelpSection === 'recentSearches' ? 'active' : ''}`} type="button" onClick={() => this.setState({searchHelpSection: 'recentSearches'})}>
+            Recent searches
+          </button>
+          <button className={`search-help-button ${this.state.searchHelpSection === 'topPlayers' ? 'active' : ''}`} type="button" onClick={() => this.setState({searchHelpSection: 'topPlayers'})}>
+            Top 10 region players
+          </button>
+            {
+              this.state.searchHelpSection === 'topPlayers' && this.state.challengerPlayers !== null ?
+                this.state.challengerPlayers.entries
+                  .sort((a, b) => b.leaguePoints - a.leaguePoints)
+                  .slice(0, 10)
+                  .map(e => (
+                    <div className="search-help-item">
+                      <a href={`http://${window.location.host}/summoner/${this.state.region}/${e.playerOrTeamName.toLowerCase()}`}>{e.playerOrTeamName}
+                        ({e.leaguePoints} LP)</a>
+                    </div>
+                  )) : null
+            }
+            {
+              this.state.searchHelpSection === 'recentSearches' ?
+                this.readNamesFromSearchCookie(this.state.region) !== null ?
+                  this.readNamesFromSearchCookie(this.state.region)
+                  .map(e => (
+                    <div className="search-help-item">
+                      <a href={`http://${window.location.host}/summoner/${this.state.region}/${e.toLowerCase()}`}>{e}</a>
+                    </div>
+                  )) :
+                  <div className="search-help-no-recent-searches">
+                    <p>No recent searches.</p>
+                  </div> : null
+            }
+        </div>
         </form>
         {
           this.state.regionSelectVisible ? <RegionSelect handleRegionSelect={this.handleRegionSelect}/> : null
