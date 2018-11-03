@@ -19,6 +19,26 @@ export default class SummonerStats extends Component {
     }
   }
 
+  setRecentSearchCookies = (region, summonerName) => {
+    let findNextSemicolon = (string, fromIndex) => {
+      for (let i = fromIndex; i < string.length; i++) {
+        if (string[i] === ";") {
+          return i;
+        }
+      }
+      return string.length;
+    };
+    let searchCookieIndex = document.cookie.indexOf(`${region}_search=`) + `${region}_search=`.length;
+    let searchCookie = document.cookie.slice(searchCookieIndex, findNextSemicolon(document.cookie, searchCookieIndex));
+    let searchCookieNames = searchCookie.split("%").filter(e => e !== "");
+    if (searchCookieNames.includes(summonerName)) {
+      return false;
+    }
+    searchCookieNames.push(summonerName);
+    document.cookie = `${region}_search=%${searchCookieNames.join("%")}%`;
+
+    return true;
+  };
 
   calculateLastSeen = time => {
     let seconds = (new Date().getTime() - time) / 1000;
@@ -120,6 +140,11 @@ export default class SummonerStats extends Component {
       .catch(err => console.log(err));
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.summonerData !== this.state.summonerData) {
+      this.setRecentSearchCookies(this.props.match.params.leagueServer.toLowerCase(), this.state.summonerData.name)
+    }
+  }
 
   render() {
     if (typeof window !== 'undefined' && this.state.fetchState === 'not started') {
