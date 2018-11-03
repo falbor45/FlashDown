@@ -50,14 +50,11 @@ export default class Home extends Component {
     if (document.cookie === "") {
       return null;
     }
-    console.log(region)
     if (document.cookie.indexOf(`${region}_search=`) === -1) {
       return null;
     }
     let searchCookieIndex = document.cookie.indexOf(`${region}_search=`) + `${region}_search=`.length;
-    console.log(searchCookieIndex)
     let searchCookie = document.cookie.slice(searchCookieIndex, findNextSemicolon(document.cookie, searchCookieIndex));
-    console.log(searchCookie)
     return searchCookie.split("%").filter(e => e !== "");
   };
 
