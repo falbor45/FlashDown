@@ -28,6 +28,7 @@ export default class SummonerStats extends Component {
       return false;
     }
     searchCookieNames.push(summonerName);
+    searchCookieNames.length > 10 ? searchCookieNames.shift() : null;
     document.cookie = `${region}_search=%${searchCookieNames.join("%")}%`;
 
     return true;
