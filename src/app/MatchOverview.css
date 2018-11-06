@@ -15,7 +15,8 @@
       justify-content: space-around;
       font-weight: bold;
       margin-bottom: 1rem;
-      text-align: center; }
+      text-align: center;
+      padding: 0 0.5rem; }
       .match-overview .team-blue .scoreboard-header > p, .match-overview .team-red .scoreboard-header > p {
         width: 13.33%; }
       .match-overview .team-blue .scoreboard-header > p:first-child, .match-overview .team-red .scoreboard-header > p:first-child {
