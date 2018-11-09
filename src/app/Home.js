@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import { Link } from 'react-router-dom'
 import './Home.css'
 import RegionSelect from './RegionSelect'
-import { findNextSemicolon } from './Helpers';
+import Error from './Error'
+import { findNextSemicolon, handleResponseStatus } from './Helpers';
 
 export default class Home extends Component {
   constructor(props) {
@@ -13,7 +14,8 @@ export default class Home extends Component {
       searchValue: '',
       regionSelectVisible: false,
       challengerPlayers: null,
-      searchHelpSection: 'topPlayers'
+      searchHelpSection: 'topPlayers',
+      error: null
     }
   }
 
@@ -40,6 +42,7 @@ export default class Home extends Component {
     });
     fetch(`http://${window.location.host}:3000/challengerPlayers/${region}`)
       .then(response => response.json())
+      .then(response => handleResponseStatus(this, response))
       .then(json => this.setState({
         challengerPlayers: json
       }))
@@ -69,7 +72,7 @@ export default class Home extends Component {
   }
 
   render() {
-    return (
+    return this.state.error !== null ? (
       <div className="home-wrapper">
         <form className="summoner-search-form"
               onSubmit={this.handleSubmit}>
@@ -83,12 +86,12 @@ export default class Home extends Component {
             <button className="find-summoner" type="button">GO!</button>
           </Link>
           <div className="search-help">
-          <button className={`search-help-button ${this.state.searchHelpSection === 'recentSearches' ? 'active' : ''}`} type="button" onClick={() => this.setState({searchHelpSection: 'recentSearches'})}>
-            Recent searches
-          </button>
-          <button className={`search-help-button ${this.state.searchHelpSection === 'topPlayers' ? 'active' : ''}`} type="button" onClick={() => this.setState({searchHelpSection: 'topPlayers'})}>
-            Top 10 region players
-          </button>
+            <button className={`search-help-button ${this.state.searchHelpSection === 'recentSearches' ? 'active' : ''}`} type="button" onClick={() => this.setState({searchHelpSection: 'recentSearches'})}>
+              Recent searches
+            </button>
+            <button className={`search-help-button ${this.state.searchHelpSection === 'topPlayers' ? 'active' : ''}`} type="button" onClick={() => this.setState({searchHelpSection: 'topPlayers'})}>
+              Top 10 region players
+            </button>
             {
               this.state.searchHelpSection === 'topPlayers' && this.state.challengerPlayers !== null ?
                 this.state.challengerPlayers.entries
@@ -105,21 +108,21 @@ export default class Home extends Component {
               this.state.searchHelpSection === 'recentSearches' ?
                 this.readNamesFromSearchCookie(this.state.region) !== null ?
                   this.readNamesFromSearchCookie(this.state.region)
-                  .map(e => (
-                    <div className="search-help-item">
-                      <a href={`http://${window.location.host}/summoner/${this.state.region}/${e.toLowerCase()}`}>{e}</a>
-                    </div>
-                  )) :
+                    .map(e => (
+                      <div className="search-help-item">
+                        <a href={`http://${window.location.host}/summoner/${this.state.region}/${e.toLowerCase()}`}>{e}</a>
+                      </div>
+                    )) :
                   <div className="search-help-no-recent-searches">
                     <p>No recent searches.</p>
                   </div> : null
             }
-        </div>
+          </div>
         </form>
         {
           this.state.regionSelectVisible ? <RegionSelect handleRegionSelect={this.handleRegionSelect}/> : null
         }
       </div>
-    )
+    ) : <Error message={this.state.error}/>
   }
 }
