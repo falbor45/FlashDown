@@ -72,7 +72,7 @@ export default class Home extends Component {
   }
 
   render() {
-    return this.state.error !== null ? (
+    return this.state.error === null ? (
       <div className="home-wrapper">
         <form className="summoner-search-form"
               onSubmit={this.handleSubmit}>
