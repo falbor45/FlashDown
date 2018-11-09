@@ -4,6 +4,15 @@
   margin: 0 auto;
   text-align: center; }
 
+.app-title {
+  color: #FFFFFF;
+  font-size: 4rem; }
+
+.app-description {
+  color: #FFFFFF;
+  margin: 1rem 0 4rem;
+  font-size: 1.25rem; }
+
 .summoner-search-form {
   position: relative;
   width: 80%;

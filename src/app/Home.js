@@ -74,6 +74,8 @@ export default class Home extends Component {
   render() {
     return this.state.error === null ? (
       <div className="home-wrapper">
+        <h1 className="app-title">Flash Down</h1>
+        <p className="app-description">An easy summoner stats look-up tool</p>
         <form className="summoner-search-form"
               onSubmit={this.handleSubmit}>
           <input className="search-input"
