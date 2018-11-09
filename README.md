@@ -1,6 +1,6 @@
 # Flash Down
 
-> Flash Down is a simplistic tool designed for easy summoner stats look-up. The project aims to aid players with statistics that would help them improve in further games. Apart from that, this tool will also allow to see live games.
+> Flash Down is a simplistic League of Legends tool designed for easy summoner stats look-up. The project aims to aid players with statistics that would help them improve in further games. Apart from that, this tool will also allow to see live games.
 
 ## Notice
 Because of Riot's API key rate limitations, one may experience errors when using the app due to exceeding mentioned limitations.
