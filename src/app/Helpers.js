@@ -136,3 +136,13 @@ export const findNextSemicolon = (string, fromIndex) => {
   }
   return string.length;
 };
+
+export const handleResponseStatus = (component, response) => {
+  if (response.status && response.status !== 200) {
+    component.setState({
+      error: response.statusText
+    });
+    return null;
+  }
+  return response;
+};

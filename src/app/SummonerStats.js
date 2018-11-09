@@ -6,7 +6,7 @@ import Match from './Match.js'
 import SummonerOverview from './SummonerOverview'
 import SummonerQueue from './SummonerQueue.js'
 import Error from './Error.js'
-import { findNextSemicolon } from './Helpers';
+import { findNextSemicolon, handleResponseStatus } from './Helpers';
 
 export default class SummonerStats extends Component {
   constructor(props) {
@@ -73,19 +73,10 @@ export default class SummonerStats extends Component {
     return result;
   };
 
-  handleResponseStatus = response => {
-    if (response.status && response.status !== 200) {
-      this.setState({
-        error: response.statusText
-      });
-      return null;
-    }
-    return response;
-  };
 
   fetchSummonerDataAndMatches = (server, summonerName) => fetch(`http://${window.location.host}:3000/summoner/${server}/${summonerName}`)
     .then(response => response.json())
-    .then(response => this.handleResponseStatus(response))
+    .then(response => handleResponseStatus(this, response))
     .then(json => {
         this.setState({
           summonerData: {
@@ -109,7 +100,7 @@ export default class SummonerStats extends Component {
 
   fetchRecentMatches = (server, summonerName) => fetch(`http://${window.location.host}:3000/matchList/${server}/${summonerName}`)
     .then(response => response.json())
-    .then(response => this.handleResponseStatus(response))
+    .then(response => handleResponseStatus(this, response))
     .then(json => {
       this.setState({
         recentMatches: json.map(e => {
@@ -125,7 +116,7 @@ export default class SummonerStats extends Component {
 
   fetchInGameStatus = (server, summonerName) => fetch(`http://${window.location.host}:3000/isInGame/${server}/${summonerName}`)
     .then(response => response.json())
-    .then(response => this.handleResponseStatus(response))
+    .then(response => handleResponseStatus(this, response))
     .then(inGame => {
       this.setState({
         inGame: inGame
@@ -140,6 +131,7 @@ export default class SummonerStats extends Component {
     }
     fetch(`http://${window.location.host}:3000/create-game-room/${this.props.match.params.leagueServer}/${this.props.match.params.summonerName}`)
       .then(response => response.json())
+      .then(response => handleResponseStatus(this, response))
       .then(json => {
         this.setState({
           roomCode: json.roomCode
