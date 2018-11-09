@@ -1,0 +1,14 @@
+.error {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  text-align: center;
+  color: #FFFFFF; }
+  .error > p {
+    font-weight: bold; }
+    .error > p:last-child {
+      font-weight: normal; }
+
+/*# sourceMappingURL=Error.css.map */

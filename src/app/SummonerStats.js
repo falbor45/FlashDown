@@ -5,6 +5,7 @@ import './SummonerStats.css'
 import Match from './Match.js'
 import SummonerOverview from './SummonerOverview'
 import SummonerQueue from './SummonerQueue.js'
+import Error from './Error.js'
 import { findNextSemicolon } from './Helpers';
 
 export default class SummonerStats extends Component {
@@ -216,7 +217,7 @@ export default class SummonerStats extends Component {
             <div></div>
         }
         {
-          this.state.error ? <p>{this.state.error}</p> : null
+          this.state.error !== null ? <Error message={this.state.error}/> : null
         }
       </div>
     )
