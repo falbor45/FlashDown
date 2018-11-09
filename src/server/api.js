@@ -201,14 +201,8 @@ let handleResponse = (res, response) => {
   if (response.status === 200) {
     return response;
   }
-  res.send({
-    status: response.status,
-    statusText: response.statusText
-  });
-  throw new Error({
-    status: response.status,
-    statusText: response.statusText
-  });
+  res.json(response);
+  throw new Error(response);
 };
 
 api.get('/challengerPlayers/:leagueServer', (req, res) => {
