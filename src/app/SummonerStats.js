@@ -2,10 +2,10 @@ import React, {Component} from 'react'
 import 'fetch-everywhere'
 import MediaQuery from 'react-responsive'
 import './SummonerStats.css'
-import Match from './Match.js'
+import Match from './Match'
 import SummonerOverview from './SummonerOverview'
-import SummonerQueue from './SummonerQueue.js'
-import Error from './Error.js'
+import SummonerQueue from './SummonerQueue'
+import Error from './Error'
 import { findNextSemicolon, handleResponseStatus } from './Helpers';
 
 export default class SummonerStats extends Component {
