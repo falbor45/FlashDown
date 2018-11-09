@@ -1,20 +1,23 @@
 import React, {Component} from 'react';
 import './LiveGame.css'
 import lucidityBoots from './assets/lucidityBoots.png'
-import {determineQueueType} from './Helpers';
+import Error from './Error'
+import {determineQueueType, handleResponseStatus} from './Helpers';
 
 export default class LiveGame extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      data: null
+      data: null,
+      error: null
     };
   }
 
   fetchRoom = () => {
     fetch(`http://${window.location.host}:3000/gamerooms/${this.props.match.params.roomCode}`)
       .then(response => response.json())
+      .then(response => handleResponseStatus(this, response))
       .then(json => {
         this.setState({
           data: json
@@ -52,7 +55,7 @@ export default class LiveGame extends Component {
 
   render() {
     return (
-      this.state.data !== null ?
+      this.state.data !== null && this.state.error === null ?
         <div className="live-game-container">
           <div className="live-game-header">
             <p>{determineQueueType(this.state.data.gameQueueConfigId)}</p>
@@ -119,7 +122,10 @@ export default class LiveGame extends Component {
               </div>
             </div>
           </div>
-        </div> : <div>Loading</div>
+        </div> :
+        this.state.error !== null ?
+        <Error message={this.state.error}/> :
+        <div>Loading</div>
     )
   }
 }
