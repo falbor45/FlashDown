@@ -16,7 +16,8 @@ export default class SummonerStats extends Component {
       fetchState: 'not started',
       roomCode: null,
       recentMatches: null,
-      inGame: null
+      inGame: null,
+      error: null
     }
   }
 
@@ -71,8 +72,19 @@ export default class SummonerStats extends Component {
     return result;
   };
 
+  handleResponseStatus = response => {
+    if (response.status && response.status !== 200) {
+      this.setState({
+        error: response.statusText
+      });
+      return null;
+    }
+    return response;
+  };
+
   fetchSummonerDataAndMatches = (server, summonerName) => fetch(`http://${window.location.host}:3000/summoner/${server}/${summonerName}`)
     .then(response => response.json())
+    .then(response => this.handleResponseStatus(response))
     .then(json => {
         this.setState({
           summonerData: {
@@ -96,6 +108,7 @@ export default class SummonerStats extends Component {
 
   fetchRecentMatches = (server, summonerName) => fetch(`http://${window.location.host}:3000/matchList/${server}/${summonerName}`)
     .then(response => response.json())
+    .then(response => this.handleResponseStatus(response))
     .then(json => {
       this.setState({
         recentMatches: json.map(e => {
@@ -111,6 +124,7 @@ export default class SummonerStats extends Component {
 
   fetchInGameStatus = (server, summonerName) => fetch(`http://${window.location.host}:3000/isInGame/${server}/${summonerName}`)
     .then(response => response.json())
+    .then(response => this.handleResponseStatus(response))
     .then(inGame => {
       this.setState({
         inGame: inGame
@@ -150,7 +164,7 @@ export default class SummonerStats extends Component {
     return (
       <div>
         {
-          this.state.summonerData !== null ?
+          this.state.summonerData !== null && this.state.error === null ?
             <div className="summoner-view">
               <div className="summoner-header">
                 <div className="summoner-icon">
@@ -200,6 +214,9 @@ export default class SummonerStats extends Component {
               }
             </div> :
             <div></div>
+        }
+        {
+          this.state.error ? <p>{this.state.error}</p> : null
         }
       </div>
     )
