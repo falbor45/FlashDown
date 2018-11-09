@@ -245,7 +245,6 @@ api.get('/isInGame/:leagueServer/:summonerName', (req, res) => {
     .then(json => {
       let summonerId = json.id;
       fetch(encodeURI(`https://${regionMap[leagueServer]}.api.riotgames.com/lol/spectator/v3/active-games/by-summoner/${summonerId}?api_key=${API_KEY}`))
-        .then(response => handleResponse(res, response))
         .then(response => response.json())
         .then(json => {
           res.send(json.hasOwnProperty('gameId'));
