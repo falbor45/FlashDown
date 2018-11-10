@@ -95,11 +95,14 @@
   .search-help .search-help-button.active {
     background: #FFFFFF; }
   .search-help .search-help-item {
-    flex: 1 0 34%;
+    flex: 1 0 51%;
     text-align: center;
     padding: 0.5rem;
     transition: 0.25s;
     color: #AAAAAA; }
+    @media screen and (min-width: 1200px) {
+      .search-help .search-help-item {
+        flex: 1 0 34%; } }
     .search-help .search-help-item:hover {
       color: #FFAE00; }
   .search-help .search-help-no-recent-searches {
