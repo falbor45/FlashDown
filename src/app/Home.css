@@ -1,8 +1,18 @@
+@keyframes splash {
+  0% {
+    opacity: 0;
+    transform: scale(0, 0); }
+  50% {
+    opacity: 1;
+    transform: scale(1.1, 1.1); }
+  100% {
+    transform: scale(1, 1); } }
 .home-wrapper {
   padding-top: 250px;
   max-width: 1200px;
   margin: 0 auto;
-  text-align: center; }
+  text-align: center;
+  animation: splash 1s ease-in-out; }
 
 .app-title {
   color: #FFFFFF;
