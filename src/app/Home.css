@@ -16,12 +16,18 @@
 
 .app-title {
   color: #FFFFFF;
-  font-size: 4rem; }
+  font-size: 6rem; }
+  @media screen and (min-width: 1200px) {
+    .app-title {
+      font-size: 4rem; } }
 
 .app-description {
   color: #FFFFFF;
   margin: 1rem 0 4rem;
-  font-size: 1.25rem; }
+  font-size: 2.25rem; }
+  @media screen and (min-width: 1200px) {
+    .app-description {
+      font-size: 1.25rem; } }
 
 .summoner-search-form {
   position: relative;
@@ -34,26 +40,35 @@
 .search-input {
   box-sizing: border-box;
   width: 100%;
-  height: 3rem;
+  height: 4rem;
   border: 1px solid #AAAAAA;
   border-bottom: none;
   text-align: center;
   border-right: none;
   padding: 0 25% 0 5%;
   border-radius: 5px 5px 0 0;
-  font-size: 1.2rem;
+  font-size: 2rem;
   outline: none; }
+  @media screen and (min-width: 1200px) {
+    .search-input {
+      height: 3rem;
+      font-size: 1.2rem; } }
 
 .find-region {
   position: absolute;
   top: 0;
   right: 10%;
   width: 10%;
-  height: 3rem;
+  height: 4rem;
   color: #AAAAAA;
   font-weight: bold;
   border: none;
-  background: none; }
+  background: none;
+  font-size: 2rem; }
+  @media screen and (min-width: 1200px) {
+    .find-region {
+      height: 3rem;
+      font-size: 1rem; } }
   .find-region:hover {
     cursor: pointer; }
 
@@ -62,11 +77,16 @@
   top: 0;
   right: 0;
   width: 10%;
-  height: 3rem;
+  height: 4rem;
   background: #FFAE00;
   font-weight: bold;
   border: none;
-  border-radius: 0 5px 0 0; }
+  border-radius: 0 5px 0 0;
+  font-size: 2rem; }
+  @media screen and (min-width: 1200px) {
+    .find-summoner {
+      height: 3rem;
+      font-size: 1rem; } }
 
 .find-challenger {
   padding: 0.5rem 1rem;
@@ -86,12 +106,15 @@
   border-radius: 0 0 5px 5px; }
   .search-help .search-help-button {
     text-align: center;
-    font-size: 1.125rem;
+    font-size: 2rem;
     flex: 1 0 34%;
     padding: 0.5rem 0;
     border: none;
     background: #CCCCCC;
     outline: none; }
+    @media screen and (min-width: 1200px) {
+      .search-help .search-help-button {
+        font-size: 1.125rem; } }
   .search-help .search-help-button.active {
     background: #FFFFFF; }
   .search-help .search-help-item {
@@ -99,17 +122,23 @@
     text-align: center;
     padding: 0.5rem;
     transition: 0.25s;
-    color: #AAAAAA; }
+    color: #AAAAAA;
+    font-size: 2rem; }
     @media screen and (min-width: 1200px) {
       .search-help .search-help-item {
-        flex: 1 0 34%; } }
+        flex: 1 0 34%;
+        font-size: 1rem; } }
     .search-help .search-help-item:hover {
       color: #FFAE00; }
   .search-help .search-help-no-recent-searches {
     flex: 1 0 51%;
     text-align: center;
     padding: 0.5rem;
-    color: #AAAAAA; }
+    color: #AAAAAA;
+    font-size: 2rem; }
+    @media screen and (min-width: 1200px) {
+      .search-help .search-help-no-recent-searches {
+        font-size: 1rem; } }
 
 .hidden {
   visibility: hidden; }
